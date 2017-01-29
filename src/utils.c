@@ -688,7 +688,9 @@ int read_fifo(struct p_fifo *f, int which)
 	int i,t, fd, len, *rlen;
 	char *buf;
 	i=t=0;
-	
+	if(NULL == f){
+		return -1;
+	}
 	switch(which){
 		case FIFO_MODE_PRI:
 			fd=f->fifo_p;
@@ -745,6 +747,9 @@ int write_fifo(struct p_fifo *f, int which, char *buf, int len)
 {
 	int x,i, l,fd;
 	x=i=l=0;
+	if(NULL == f){
+		return -1;
+	}
 	switch(which){
 		case FIFO_MODE_PRI:
 			if(f->dbg) g_fprintf(stderr,"Using pri fifo for write\n");
@@ -758,7 +763,7 @@ int write_fifo(struct p_fifo *f, int which, char *buf, int len)
 			g_fprintf(stderr,"Unknown fifo %d!\n",which);
 			return -1;
 	}
-	if(NULL ==f || fd <3 || NULL ==buf)
+	if(fd <3 || NULL ==buf)
 		return -1;
 	if(f->dbg) g_fprintf(stderr,"writing '%s'\n",buf);
 	while(len-i>0){	

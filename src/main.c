@@ -1654,7 +1654,7 @@ static gboolean my_item_event (GtkWidget *w,GdkEventKey *e, gpointer user)
 	if(GDK_MOTION_NOTIFY == e->type)
 		return FALSE;
 	/*printf("my_item_event: T 0x%x S 0x%x ",e->type,e->state); */
-	if(NULL !=h && GDK_ENTER_NOTIFY ==e->type ){/**add to delete   */
+	if(GDK_ENTER_NOTIFY ==e->type ){/**add to delete   */
 		GdkEventCrossing *enter=(GdkEventCrossing *)e;
 		/*printf("state 0x%x\n",enter->state); */
 		/**use shift and right-click  */
