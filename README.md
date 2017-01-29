@@ -1,7 +1,12 @@
 Parcellite - Lightweight GTK+ Clipboard Manager
 ---
+<a href="https://scan.coverity.com/projects/zawertun-parcellite">
+  <img alt="Coverity Scan Build Status"
+       src="https://scan.coverity.com/projects/11608/badge.svg"/>
+</a>
 
 Copyright (C) 2007-2008 Gilberto "Xyhthyx" Miralla <xyhthyx@gmail.com>
+
 Copyright (C) 2009-2016 Doug Springer <gpib@rickyrockrat.net>
 
 Introduction
