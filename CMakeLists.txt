@@ -22,3 +22,18 @@ add_definitions(${GTK2_CFLAGS_OTHER})
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -Wno-unused-parameter")
 target_compile_definitions(parcellite PRIVATE GETTEXT_PACKAGE="parcellite" PARCELLITELOCALEDIR="/usr/parcellite/locale")
 target_link_libraries(parcellite ${X11_LIBRARIES} ${GTK2_LIBRARIES})
+
+install(TARGETS parcellite DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
+
+install(FILES icons/parcellite.svg DESTINATION ${CMAKE_INSTALL_PREFIX}/share/icons/hicolor/scalable/apps)
+
+file (GLOB ICONS "icons/*/parcellite.png")
+foreach(file ${ICONS})
+    get_filename_component(dir ${file} DIRECTORY)
+    get_filename_component(dir ${dir} NAME)
+
+    install(FILES ${file} DESTINATION ${CMAKE_INSTALL_PREFIX}/share/icons/hicolor/${dir}/apps)
+endforeach()
+
+install(FILES data/parcellite.desktop DESTINATION ${CMAKE_INSTALL_PREFIX}/share/applications)
+install(FILES data/parcellite-startup.desktop DESTINATION ${CMAKE_INSTALL_PREFIX}/share/applications)
