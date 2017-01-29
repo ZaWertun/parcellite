@@ -19,6 +19,6 @@ add_executable(parcellite src/attr_list.c
 
 add_definitions(${GTK2_CFLAGS_OTHER})
 
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -pedantic -Wall -Wextra")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -Wno-unused-parameter")
 target_compile_definitions(parcellite PRIVATE GETTEXT_PACKAGE="parcellite" PARCELLITELOCALEDIR="/usr/parcellite/locale")
 target_link_libraries(parcellite ${X11_LIBRARIES} ${GTK2_LIBRARIES})

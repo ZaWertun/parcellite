@@ -195,10 +195,12 @@ struct cmdline_opts *parse_options(int argc, char* argv[])
   /* Check which options were parseed */
   
   /* Do not display icon option */
-  if (opts->icon)  {
+	if (opts->icon) {
 		set_pref_int32("no_icon",TRUE);
-  } else
-  	set_pref_int32("no_icon",FALSE);
+	} else {
+		set_pref_int32("no_icon",FALSE);
+	}
+
 	if(opts->version){
 		gchar *v;
 		#ifdef HAVE_CONFIG_H	/**VER=555; sed "s#\(.*\)svn.*\".*#\1svn$VER\"#" config.h  */
@@ -574,22 +576,7 @@ gboolean fifo_read_cb (GIOChannel *src,  GIOCondition cond, gpointer data)
 	
   if(f->dbg) g_fprintf(stderr,"0x%X Waiting on chars\n",cond);
 	f->rlen=0;
-/** (	while (1) {*/
-		int s;
-		
-		s=read_fifo(f,which);
-/**  		usleep(100);
-		if(-1 == s){
-			g_printf("Error reading fifo\n");
-			return 0;
-		} else if(0 == s)
-			break;
-	}    
-	if(f->rlen>0){
-		g_printf("Setting fifo which\n");
-		f->which=FIFO_MODE_PRI==which?ID_PRIMARY:ID_CLIPBOARD;
-	}    */
-		
+	read_fifo(f,which);
 	return TRUE;
 }
 

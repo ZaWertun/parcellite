@@ -98,7 +98,7 @@ static AppIndicator *indicator=NULL;
 static GtkWidget *indicator_menu = NULL;
 #endif
 static GtkStatusIcon *status_icon=NULL; 
-GMutex *hist_lock=NULL;
+GMutex hist_lock;
 static gboolean actions_lock = FALSE;
 static int show_icon=0;
 static int have_appindicator=0; /**if set, we have a running indicator-appmenu  */
@@ -169,7 +169,7 @@ WARNING! This modifies ntext!
 ****************************************************************************/
 gchar *process_new_item(GtkClipboard *clip,gchar *ntext, int *mod)
 {
-	glong len,nlen;
+	size_t len, nlen;
 	gchar *rtn=NULL;
 	int i=0;
 	if(NULL != mod)
@@ -558,7 +558,6 @@ void do_command(gchar *buf, gint len)
 void check_clipboards(gint mode)
 {
 	gchar *ptext, *ctext, *last;
-	int n=0;
 	
 	/*g_printf("check_clipboards\n"); */
 	if(fifo->clen){/**we have a command to execute  */
@@ -578,13 +577,11 @@ void check_clipboards(gint mode)
 				if(fifo->dbg) g_printf("Setting PRI '%s'\n",fifo->buf);
 				update_clipboard(primary, fifo->buf, H_MODE_NEW);
 				fifo->rlen=0;
-				n=1;
 				break;
 			case ID_CLIPBOARD:
 				fifo->rlen=validate_utf8_text(fifo->buf, fifo->rlen);
 				if(fifo->dbg) g_printf("Setting CLI '%s'\n",fifo->buf);
 				update_clipboard(clipboard, fifo->buf, H_MODE_NEW);
-				n=2;
 				fifo->rlen=0;
 				break;
 			
@@ -957,24 +954,9 @@ gboolean  handle_history_item_right_click (int i, gpointer data)
 {
   /* we passed the view as userdata when we connected the signal */
 	struct history_info *h=(struct history_info*)data;
-	struct history_item *c=NULL;
-	if(NULL !=h ){
-		GList* element = g_list_nth(history_list, h->wi.index);
-		if(NULL !=element){
-			c=(struct history_item *)(element->data);
-			/*g_printf("%s ",c->text); */
-		}
+	if(NULL !=h && i == HIST_MOVE_TO_OK){
+		handle_marking(h,h->wi.item,h->wi.index,OPERATE_PERSIST);
 	}
-	switch(i){
-		case HIST_MOVE_TO_CANCEL:
-/*			g_print("canceled\n"); */
-			break;
-		case HIST_MOVE_TO_OK:
-/*			g_printf("Move to"); */
-			handle_marking(h,h->wi.item,h->wi.index,OPERATE_PERSIST);
-			break;
-	}
-	/*gtk_widget_grab_focus(h->menu); */
 	return TRUE;
 }
 /**callback wrappers for the above function  */
@@ -1524,9 +1506,10 @@ static gboolean key_release_cb (GtkWidget *w,GdkEventKey *e, gpointer user)
 		TRACE(g_fprintf(stderr,"Ignoring key '%c' 0x%02x\n",e->keyval,e->keyval));	
 		return FALSE;
 	}
-  if(e->keyval >= 0xff50 && e->keyval <= 0xff57) /**arrow keys, home,end,pgup,pgdwn  */
-  	return FALSE;
-  	
+	if(e->keyval >= 0xff50 && e->keyval <= 0xff57){ /**arrow keys, home,end,pgup,pgdwn  */
+		return FALSE;
+	}
+
 	if(idx>=KBUF_SIZE){
 		TRACE(g_fprintf(stderr,"keys full\n"));
 		return TRUE;
@@ -1659,7 +1642,6 @@ done:
 static gboolean my_item_event (GtkWidget *w,GdkEventKey *e, gpointer user)
 {
 	static struct history_info *h=NULL;
-	GtkWidget *menu=NULL;
 	
 	if(NULL==w && NULL==e){
 		h=(struct history_info *)user;
@@ -1668,7 +1650,6 @@ static gboolean my_item_event (GtkWidget *w,GdkEventKey *e, gpointer user)
 	}
 	if(NULL == h)
 		return FALSE;	
-	menu=h->menu;
 	/**check for enter  */
 	if(GDK_MOTION_NOTIFY == e->type)
 		return FALSE;
@@ -2234,7 +2215,7 @@ static void parcellite_init()
 	if(FALSE ==g_thread_supported()){
 		g_fprintf(stderr,"g_thread not init!\n");
 	}
-	hist_lock= g_mutex_new();
+	g_mutex_init(&hist_lock);
   
   show_icon=!get_pref_int32("no_icon");
   /* Read history */
@@ -2341,8 +2322,9 @@ int main(int argc, char *argv[])
 #endif
   /* Parse options */
 	opts=parse_options(argc, argv);
-  if(NULL == opts)
-   	return 1;
+	if(NULL == opts) {
+		return 1;
+	}
 	if(opts->exit)
 		return 0;
 	mode=PROC_MODE_EXACT;
