@@ -23,6 +23,8 @@ G_BEGIN_DECLS
 
 extern GMutex *hist_lock;
 
+#define ENABLE_NLS
+
 #define ACTIONS_TAB    2
 #define POPUP_DELAY    100
 #define CHECK_INTERVAL 500

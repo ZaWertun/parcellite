@@ -1,5 +1,6 @@
 #ifndef __PARCELLITE_INTL_H__
 	#define __PARCELLITE_INTL_H__
+	#include <libintl.h>
 	#ifdef HAVE_CONFIG_H
 		#include "config.h"
 	#endif /* HAVE_CONFIG_H */
