@@ -1,0 +1,8 @@
+[Desktop Entry]
+Categories=Utility
+Comment=Clipboard Manager
+Exec=parcellite
+Icon=parcellite
+Name=Parcellite
+Terminal=false
+Type=Application
