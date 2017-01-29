@@ -1,0 +1,572 @@
+# Copyright (C) 2011-2013 by rickyrockrat <gpib at rickyrockrat dot net>
+#
+# This file is part of Parcellite.
+#
+# Parcellite is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 3 of the License, or
+# (at your option) any later version.
+#
+# Parcellite is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+
+# description
+check_err () {
+	if [ $? -ne 0 ]; then
+		log "$1 Failed. Abort"
+		exit 1
+	fi
+}
+
+# Make sure we are checked in.
+check_local () {
+  echo "$FUNCNAME"
+  case $SCM_NAME in
+	  svn) M=$(svn st|grep -c "^M");;
+	  git) M=$(git status |grep -c 'modified: ')
+		if [ "$M" = "0" ]; then 
+			M=$(git status |grep -c 'by [0-9]* commit')
+		else
+			echo "Locally modified files"
+		fi;;
+	  *) echo "Unknown SCM name '$SCM_NAME'"
+	  	exit 1;;
+	esac
+  if [ "$M" != "0" ]; then
+    echo "local is not up to date with remote"
+    if [ "$1" = "1" ]; then
+      return
+    fi
+    exit 1
+  fi
+}
+#
+log () {
+echo "$1" |tee -a "$LOGF"
+#echo "$1" >> "$LOGF"
+}
+# Ask user what version
+# just set vars if it was passed in.
+ask_version () {
+  echo "$FUNCNAME"
+  if [ -n "$tag" ]; then
+    return
+  fi
+  if [ -z "$1" ]; then
+    echo "Tag to operate on (create or build deb from)?"
+    read tag
+  else
+    tag="$1"
+  fi
+  turl="$BURL/tags/$tag"
+  tdir="parcellite-$tag"
+  CODIR="$ASVN/test.$tag"
+  LOGF="$CODIR/build.log"
+  debdir="parcellite_$tag"
+}
+# Ask username for sourceforge
+ask_user () {
+  log "$FUNCNAME"
+  if [ -n "$user" ]; then
+    return
+  fi
+  log "username?"
+  read user
+}
+# Copy the trunk to tag
+scm_cp_to_tag () {
+  echo "$FUNCNAME"
+  ask_version
+  case $SCM_NAME in
+  	svn)  E=$(svn ls $turl --depth empty 2>&1|grep -c "non-exist");;
+  	git)  E=$(git tag -l $tag|grep -c $tag)
+  		if [ "1" = "$E" ]; then E="0"; else E="1"; fi;;
+  	*) echo "Unknown version control '$SCM_NAME'"
+  		exit 1;;
+  esac
+  	
+  if [ "$E" = "0" ]; then
+    echo "$tag exists."
+    exit 1
+  fi
+  if [ -e "$CODIR" ]; then
+    echo "$CODIR exists. Refusing to overwrite."
+    exit 1
+  fi
+  echo "Description for tag?"
+  read desc
+  ask_user
+  case $SCM_NAME in
+  	svn) echo "Contacting $PURL for svn cp"
+  		svn cp --username "$user" -m"$desc" $BURL/trunk $turl;;
+  	git) echo "Tagging '$tag'"
+  		git tag -a -m"$desc" $tag 
+		check_err "scm local tag"
+		git push origin
+		git push origin --tags
+		check_err "git push origin";;
+  	*) echo "Never get here"
+  		exit 1;;
+  esac
+  check_err "scm tag"
+}
+scm_tag () {
+	echo "$FUNCNAME"
+	ask_version
+}
+# Set us up so we are either GIT or SVN.
+#Check to be sure we have the correct directory orientation
+set_scm_local (){
+  echo "$FUNCNAME"
+  if [ -e "$CDIR/.git" ]; then # see if we are GIT
+    SCM_NAME="git"
+  	SCM_DIR=".git"
+  	BURL=$(grep -A2 '\[remote' "$CDIR/.git/config" |grep -A2 '"origin"'|grep url|sed 's!.*=[ ]*!!')
+  elif [ -e "$CDIR/.svn" ]; then # see if we are SVN
+  	SCM_DIR=".svn"
+  	SCM_NAME="svn"
+  	PURL="https://svn.code.sf.net"
+		BURL="$PURL/p/parcellite/code"
+  	STERM=$(echo "$BURL"|sed 's!.*://!!')
+  	S=$(grep -c "$STERM" "$CDIR/.svn/entries")
+  	if [ "$S" = "0" ]; then	
+  		echo "$CDIR is not svn, and we did not find git. "
+    	echo "$CDIR does not appear to be a working local copy"
+	  	exit 1
+	  fi
+  fi
+  ASVN=$(dirname "$CDIR")
+  if [ -e "$ASVN/$SCM_DIR" ]; then
+    echo "directory '$ASVN should NOT be under $SCM_NAME"
+    exit 1
+  fi
+}
+#Fix configure.ac to reflect version and do autogen.
+# assume we are in the top directory 
+# version is in $1
+fix_configure_ac (){
+  rm scmversion.sh
+  check_err "rm svnver"
+  sed -i "s/\(AC_INIT.*\)m4_.*)\(.*rickyrockrat.*\)/\1[$1]\2/" configure.ac
+  check_err "update configure.ac"
+  ./autogen.sh
+}
+
+# make check out dir and and check out tag
+test_tag_co () {
+  echo "$FUNCNAME"
+  mkdir -p "$CODIR"
+  check_err "mkdir co"
+  cd "$CODIR"
+  if [ -e $CODIR/$tag/$SCM_DIR ] ; then
+    log "$CODIR/$tag already exists. Not re-checking out"
+    return
+  fi
+  case $SCM_NAME in
+  	svn) log "performing svn co $turl"
+  		svn co "$turl";;
+  	git) log "performing git clone $BURL"
+  		git clone --single-branch --branch $tag --depth 1 $BURL $tag;;
+  	*) echo "unknown SCM type '$SCM_NAME'"
+  	exit 1;;
+  esac
+ 	check_err "scm co"
+  cp -a $tag $tdir
+  check_err "mv $tag $tdir"
+  cd $tdir
+  check_err "cd $tdir"
+  fix_configure_ac "$tag"
+}
+# Make the tarball
+make_tarball () {
+  log "$FUNCNAME"
+  cd "$CODIR"
+  check_err "cd $CODIR"
+  tar --exclude $SCM_DIR -czf $tdir.tar.gz $tdir
+  check_err "tar -c"
+}
+# test the tar ball
+test_tarball() {
+  log "$FUNCNAME"
+  cd "$CODIR"
+  check_err "cd dir"
+  mkdir tar_test
+  check_err "mkdir tar_test"
+  cd tar_test
+  tar -xzf ../$tdir.tar.gz
+  check_err "untar"
+  cd "$tdir"
+  check_err "cd tardir"
+  ./configure
+  check_err "config"
+  make
+  check_err "make"
+}
+# build the rules file
+# first arg is y for libappind
+# y/n fname
+build_rules () {
+ 
+ echo "#!/usr/bin/make -f" > "$2"
+ echo "# -*- makefile -*-">> "$2"
+ echo "# Built by rel.common" "$2"
+ echo "# Uncomment this to turn on verbose mode.">> "$2"
+ echo "#export DH_VERBOSE=1">> "$2"
+ 
+ if [ "$1" = "y" ]; then
+   CFG_FLG="--enable-appindicator=yes"
+ else
+   CFG_FLG="--enable-appindicator=no"
+ fi
+# echo "DEB_CONFIGURE_EXTRA_FLAGS += $CFG_FLG">> "$2"
+# echo "export DEB_CONFIGURE_EXTRA_FLAGS" >> "$2"
+ echo " ">> "$2"
+ echo "%:">> "$2"
+ echo -n -e '\t'>> "$2"
+ echo 'dh $@ '>> "$2"
+ echo " ">> "$2"
+ echo "override_dh_auto_configure:" >> "$2"
+  echo -n -e '\t'>> "$2"
+ echo "dh_auto_configure -- $CFG_FLG" >> "$2"
+}
+# build the deb package files
+# the arg is configure options passed to the deb build, i.e.
+# --enable-appindicator=no
+build_deb () {
+  log "$FUNCNAME"
+  cd "$CODIR/tar_test/$tdir"
+  check_err "cd tar_test" 
+  AI="n"
+  if [ -n "$1" ]; then
+    _COPT="-c $1"
+    AI=$(echo "$1"|grep -c "=yes")
+    if [ "$AI" = "0" ]; then
+      AI="n"
+    else 
+		  AI="y"
+	  fi
+  fi
+  build_rules "$AI" "$CODIR/tar_test/rules"
+  log "build_deb: got '$1', copt='$_COPT'"
+  "$CDIR/build-debpkg.sh" -t "$tag" -p ../../$tdir.tar.gz  $_COPT
+  check_err "build deb"
+  cd ..
+  mv *.deb ..
+  cd ..
+  # rename the appind thingy
+  apind=$(echo "$1"|grep appindicator|grep -c "yes")
+  if [ "$apind" = "1" ]; then
+    d=$(ls *.deb);
+    n=$(ls *.deb|sed 's!\.deb!-appind.deb!')
+    mv $d $n
+  fi
+   
+}
+# set our absolute path (or try to)
+set_abs_path () {
+  CDIR=$(dirname $0)
+  T=$(dirname $CDIR)
+  if [ "$T" = "$CDIR" ]; then # ./ invocation
+    CDIR=$(pwd)
+  fi
+  echo "Using '$CDIR'"
+}
+
+# Select gpg keys
+select_gpg_keys () {
+ if [ -n "$KEYID" ]; then
+   return
+ fi
+ gpg --list-keys
+ log "Which key? 2048R/ABCDEF12 - just need the ABC part"
+ read KEYID
+ G_FULL=$(gpg --fingerprint $KEYID|grep "^uid"|sed -e 's!uid\W*!!')
+ GNAME=$(echo "$G_FULL"|sed 's!\(.*\) <.*!\1!')
+ GEMAIL=$(echo "$G_FULL"|sed 's!.* \(.*\)!\1!'|tr -d '<>')
+} 
+#Figure out last revision...
+# tag like 1.1.6
+last_revision () {
+	_first=$(echo "$1"|sed 's!\(.\).*!\1!')
+	_second=$(echo "$1"|sed 's!..\(.\).*!\1!')
+  _third=$(echo "$1"|sed 's!.*\.!!')
+  if [ $_third -eq 0 ]; then
+    if [ $_second -eq 0 ]; then
+      let _first=_first-1
+      let _second=9
+    else
+      let _second=_second-1
+    fi
+    let _third=9
+  else
+    let _third=_third-1
+  fi
+  last_rev="$_first.$_second.$_third"
+  log "$1 -1 = $last_rev"
+}
+# setup the directories, build, and send to launchpad
+finish_ppa () {
+#set up the directory
+ if [ "$oldtag" != "$tag" ]; then
+   PDIR="$PDIR-$tag"
+ fi
+ cd "$CODIR"
+ check_err "CD $CODIR"
+ mkdir -p "$PDIR/t/debian"
+ cp -a "$oldtag" "$PDIR/$debdir"
+ cd "$PDIR"
+ check_err "mkdir/cd $PDIR" 
+ cd "$debdir"
+ fix_configure_ac "$AVER"
+ cd ..
+ tar --exclude $SCM_DIR -czf "$debdir.orig.tar.gz" "$debdir"
+ check_err "tar for ppa"
+ cp "$debdir"/deb/* t/debian
+#build changelog
+ last_revision "$ntag"
+ echo "parcellite (${tag}-1ppa${PPANO}) $SERIES; urgency=low" > t/debian/changelog
+ cat "$debdir"/ChangeLog |while read line; do 
+  if [ $(echo "$line"|grep -c V$last_rev) -gt 0 ]; 
+    then break 
+  else 
+    echo "$line"| sed 's!^.*+!  - !;s!^V!  * V!'|grep -v Changes>> t/debian/changelog
+  fi 
+ done
+ DATE=$(date -R)
+ echo " -- Doug Springer <gpib@rickyrockrat.net>  $DATE" >> t/debian/changelog
+# setup control
+ sed -i 's!ADD_ARCH_HERE!any!' t/debian/control
+ if [ "$AI" = "y" ]; then
+  sed -i 's!\(^Build-Depends:.*\)!\1, libappindicator-dev!' t/debian/control
+  sed -i 's!\(^Depends:.*\)!\1, libappindicator1 (>= 0.2.4)!' t/debian/control
+ fi
+#do compat
+ echo 5 > t/debian/compat
+#build rules
+ build_rules "$AI" "t/debian/rules"
+ 
+ cd t
+ select_gpg_keys
+ echo "Upload source Note: if you dont' currently erros out? (y/n)"
+ read YN
+ if [ "$YN" = "y" ]; then
+   debuild -S -sa "-k $KEYID"
+ else
+   debuild -S -sd "-k $KEYID"
+   mv "../${debdir}-1ppa$PPANO.dsc" "../${debdir}-1ppa${PPANO}.dsc.orig"
+   gpg --output ../dsc.orig "../${debdir}-1ppa${PPANO}.dsc.orig"
+   grep -v orig.tar.gz ../dsc.orig >../dsc.new
+   gpg --clearsign < ../dsc.new > "../${debdir}-1ppa${PPANO}.dsc"
+ fi
+ check_err "debuild"
+ cd ..
+ echo "Do you want to send the ppa to launchpad for building? (y/n)"
+ read YN
+ if [ "$YN" = "y" ]; then
+   echo "Sending to $PPA"
+   dput $PPA "${debdir}-1ppa${PPANO}_source.changes"
+   check_err "dput"
+ fi
+}
+# build the ppa & send it to launchpad
+# Add this to depends
+# libappindicator-dev
+setup_ppa (){
+ echo "$FUNCNAME"
+ echo "Set ppa to something different than $tag? (If multiple series set below, auto-adds ~series"
+ read NT
+ oldtag="$tag"
+ if [ "$NT" = "y" ]; then
+   echo "full tag number (replaces '$tag')?"
+   read tag
+ fi
+ 
+ echo "Build with libappindicator? (y/n)"
+ read AI
+ SUPPORTEDSERIES="utopic trusty precise lucid"
+ echo "What series does this apply to? (i.e. $SUPPORTEDSERIES etc)"
+ echo " For multiple series, put spaces between series (enter just uses all)"
+ read MSERIES
+ if [ -z "$MSERIES" ]; then
+   echo "Selecting all.."
+   MSERIES="$SUPPORTEDSERIES"
+ fi
+ echo "What ppa number should we use? (1 for the first, etc.)"
+ read PPANO
+ let i=0
+ for x in $MSERIES; do
+   let i=i+1
+ done 
+ ntag="$tag"
+ for SERIES in $MSERIES; do
+  if [ $i -gt 1 ]; then
+    tag="${ntag}~${SERIES}"
+  fi
+  debdir="parcellite_$tag"
+  AVER="$tag-ppa"
+#build our about version number
+  if [ "$AI" = "y" ]; then
+    AVER="$AVER-app"
+    PPA="ppa:rickyrockrat/parcellite-appindicator"
+    PDIR="ppa-app"
+  else
+    PPA="ppa:rickyrockrat/parcellite"
+    PDIR="ppa"
+  fi
+  finish_ppa
+ done
+
+}
+# show the links for the user to copy.
+show_links () {
+FN=$CODIR/sourcforge.txt
+
+echo "$tag is Released" > "$FN"
+echo " ">>"$FN"
+echo "Change Log:" >> "$FN"
+echo " " >> "$FN"
+X=$(grep -n -m1 '^$' "$CDIR/ChangeLog" | sed 's#:##')
+echo "$X"
+let X=X-1
+grep -m $X '.' "$CDIR/ChangeLog" |sed 's!<!\&lt\;!g;s!>!\&gt\;!g' >> "$FN"
+echo " " >> "$FN"
+echo "Source Forge Links" >> "$FN"
+echo "The files can be found here:" >> "$FN"
+echo "The source can be <a href=\"http://sourceforge.net/projects/parcellite/files/parcellite/parcellite-$tag/parcellite-$tag.tar.gz/download\">downloaded here</a>." >> "$FN"
+echo " " >> "$FN"
+echo "Non-Unity Debs" >> "$FN"
+echo "	" >> "$FN"
+echo "<a href=\"http://sourceforge.net/projects/parcellite/files/parcellite/parcellite-$tag/parcellite_$tag-1_i386.deb/download\">i386</a>" >> "$FN"
+echo "<a href=\"http://sourceforge.net/projects/parcellite/files/parcellite/parcellite-$tag/parcellite_$tag-1_amd64.deb/download\">amd64</a>." >> "$FN"
+echo " " >> "$FN"
+echo "Unity debs" >> "$FN"
+echo " " >> "$FN"
+echo "<a href=\"http://sourceforge.net/projects/parcellite/files/parcellite/parcellite-$tag/parcellite_$tag-1_amd64-appind.deb/download\">amd64-appind</a>." >> "$FN"
+echo "<a href=\"http://sourceforge.net/projects/parcellite/files/parcellite/parcellite-$tag/parcellite_$tag-1_i386-appind.deb/download\">i386-appind</a>." >> "$FN"
+cat "$FN"
+echo "File is $FN"
+
+}
+
+# Finish testing of our svn tag
+rel_deb () {
+test_tag_co
+make_tarball
+cp -a $CODIR $CODIR.sav
+test_tarball
+# so Unity is a pain...
+build_deb "--enable-appindicator=yes"
+mv $CODIR $CODIR.appind
+mv $CODIR.sav $CODIR
+mv $CODIR.appind/*.deb $CODIR
+test_tarball
+# for everyone else
+build_deb "--enable-appindicator=no"
+echo "output in $CODIR"
+show_links
+}
+#update the .pot file for translators
+update_pot () {
+_PO="parcellite.pot"
+cp $CDIR/po/$_PO $CDIR/_$_PO
+$CDIR/extract_strings.sh "$tag"
+_DIFF=$(diff -q $CDIR/_$_PO $CDIR/po/$_PO|grep -c differ)
+if [ "0" != "$_DIFF" ]; then
+	case $SCM_NAME in
+		svn) svn ci -m"Updated $_PO";;
+		git) git commit -m"Updated $_PO" po ;;
+		*) echo "Unknown SCM name '$SCM_NAME'"
+			exit 1;;
+	esac
+fi
+rm $CDIR/_$_PO
+}
+#Check the translations for errors
+check_translations () {
+  let err=0
+  for f in $(ls po/*.po); do
+     MSG=$(msgfmt -o  _tmp_po $f 2>&1) 
+     POE=$(echo "MSG"|grep -ic error) 
+     if	[ "0" != "$POE" ]; then
+       echo "Error on '$f':"
+       echo "$MSG"
+       let err=err+1
+     fi
+     rm _tmp_po
+  done
+  if [ $err -ne 0 ]; then
+    echo "Errors in Translation files. Abort."
+    exit 1
+  fi
+}
+
+#
+copy_files_to_sourceforge () {
+ ask_version 
+ for f in amd64 amd64-appind i386 i386-appind; do
+   flist="$flist parcellite_${tag}-1_${f}.deb"
+ done
+ let i=0
+ for f in $flist; do
+   if [ -e $CODIR/$f ]; then
+     echo "Found $f"
+     let i=i+1
+   else
+     echo "$CODIR/$f does not exist"
+   fi
+ done
+ if [ $i -lt 4 ]; then
+   echo "File list is not complete. Continue anyway?"
+   read YN
+   if [ "$YN" != "y" ]; then
+     echo "User aborted."
+     exit 1
+   fi
+ fi
+ echo -n "Username for sourceforge: "
+ ask_user
+# Send the command to create a shell
+ echo "When you get to command line, type exit"
+ ssh -t $user,parcellite@shell.sourceforge.net create
+ TO_DIR="/home/frs/project/parcellite/parcellite"
+ NDIR="$TO_DIR/parcellite-$tag"
+ echo "Creating directory $NDIR"
+ ssh $user@shell.sourceforge.net mkdir $NDIR
+ for f in $flist; do
+   tlist="$tlist $CODIR/$f"
+ done
+ cp $CDIR/ChangeLog $CODIR/README.txt
+ tlist="$tlist  $CODIR/README.txt  $CODIR/parcellite-${tag}.tar.gz"
+ echo "Copy files $tlist"
+ echo "To $NDIR"
+ scp $tlist $user@shell.sourceforge.net:$NDIR
+}
+
+remote_i386 () {
+  ask_version
+  echo "Build deb files on remote machine?"
+  read YN
+  if [ "$YN" != "y" ]; then
+    echo "User aborted remote build"
+    exit 1
+  fi
+  echo "user@machine for ssh?(note remote machine needs correct gpg key & /src/parcellite directory)."
+  read userat
+  case $SCM_NAME in
+  	svn) scm_cmd="svn co http://svn.code.sf.net/p/parcellite/code/tags/$tag $tag-i386";;
+  	git) scm_cmd="git clone --depth=1 -b $tag $BURL $tag-i386";;
+  	*) echo "Unknown SCM name '$SCM_NAME'"
+  	exit 1;;
+  esac
+  	
+  ssh -t $userat "cd /src/parcellite; $scm_cmd; cd $tag-i386;./rel.deb.sh $tag"
+  echo "Copying deb files from remote"
+  scp ${userat}:/src/parcellite/test.$tag/*.deb $CDIR/Changelog $CODIR
+}
+

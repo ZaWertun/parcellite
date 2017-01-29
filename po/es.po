@@ -1,0 +1,461 @@
+# Spanish translation of parcellite
+# Copyright (C) 2008 Xyhthyx <xyhthyx@gmail.com>
+# This file is distributed under the same license as the parcellite package.
+#
+#
+# Gilberto "Xyhthyx" Miralla <xyhthyx@gmail.com>, 2008.
+# jcsl <trcs@gmx.com>, 2014.
+msgid ""
+msgstr ""
+"Project-Id-Version: 1.1.7\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-03-23 11:09+0100\n"
+"PO-Revision-Date: 2014-03-23 13:50+0100\n"
+"Last-Translator: jcsl <trcs@gmx.com>\n"
+"Language-Team: Spanish <kde-i18n-doc@kde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: es\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Lokalize 1.5\n"
+
+msgid "Action"
+msgstr "Acción"
+
+msgid "Actions"
+msgstr "Acciones"
+
+msgid "Actions key combination:"
+msgstr "Combinación de teclas para Acciones:"
+
+msgid "Add..."
+msgstr "Añadir..."
+
+msgid "Alternate Non-printing Display"
+msgstr "Usar alternativa para caracteres no imprimibles"
+
+msgid "Auto Paste"
+msgstr "Pegar automáticamente"
+
+msgid "<b>Clipboards</b>"
+msgstr "<b>Portapapeles</b>"
+
+msgid "Beginning"
+msgstr "Inicio"
+
+msgid "Behavior"
+msgstr "Comportamiento"
+
+msgid "<b>History</b>"
+msgstr "<b>Historial</b>"
+
+msgid "<b>Hotkeys</b>"
+msgstr "<b>Combinaciones de teclas</b>"
+
+msgid "<b>Items</b>"
+msgstr "<b>Ítems</b>"
+
+msgid "<b>Miscellaneous</b>"
+msgstr "<b>Miscelánea</b>"
+
+msgid "<b>None</b>"
+msgstr "<b>Ninguna</b>"
+
+msgid "<b>Omitting</b>"
+msgstr "<b>Elipsis</b>"
+
+msgid "<b>X</b>"
+msgstr "X"
+
+msgid "<b>Y</b>"
+msgstr "Y"
+
+msgid "Capture hyperlinks only"
+msgstr "Capturar solo los hipervínculos"
+
+msgid "Case Sensitive Search"
+msgstr "Búsqueda distinguiendo mayúsculas de minúsculas"
+
+msgid "Character length of items"
+msgstr "Longitud en caracteres de los ítems"
+
+msgid "_Clear"
+msgstr "_Borrar"
+
+msgid "Clear the history?"
+msgstr "¿Borrar el historial?"
+
+msgid ""
+"Clipboard CLI usage examples:\n\n  echo \"copied to clipboard\" | "
+"parcellite\n  parcellite \"copied to clipboard\"\n  echo \"copied to "
+"clipboard\" | parcellite -c"
+msgstr ""
+"Ejemplos de uso del portapapeles en la terminal (CLI):\n\n  echo \"copiado al "
+"portapapeles\" | parcellite\n  parcellite \"copiado al portapapeles\"\n  echo "
+"\"copiado al portapapeles\" | parcellite -c"
+
+msgid "Clipboard Manager"
+msgstr "Gestor del portapapeles"
+
+msgid "Command"
+msgstr "Orden"
+
+msgid "Confirm before clearing history"
+msgstr "Confirmar antes de borrar el historial"
+
+msgid "Control-click Parcellite's tray icon to use actions,"
+msgstr ""
+"Control-clic sobre el icono de Parcellite en la bandeja del sistema para usar "
+"acciones,"
+
+msgid ""
+"Copyright (C) 2007, 2008 Gilberto \"Xyhthyx\" Miralla\nCopyright (C) "
+"2010-2013 Doug Springer"
+msgstr ""
+"Copyright (C) 2007, 2008 Gilberto \"Xyhthyx\" Miralla\nCopyright (C) "
+"2010-2013 Doug Springer"
+
+msgid "Couldn't create directory: %s\n"
+msgstr "No se pudo crear el directorio: %s\n"
+
+msgid "Current entry on top"
+msgstr "Elemento actual en la parte superior"
+
+msgid "DebugUpdate"
+msgstr "DebugUpdate"
+
+msgid "Display"
+msgstr "Visualización"
+
+msgid "Display Version info"
+msgstr "Mostrar información de la versión"
+
+msgid "Do not use status icon (Ctrl-Alt-P for menu)"
+msgstr "No usar icono de estado (Ctrl-Alt-P para el menú)"
+
+msgid "Dummy desc"
+msgstr "Descripción vacía"
+
+msgid "Dummy tip"
+msgstr "Consejo vacío"
+
+msgid "_Edit actions"
+msgstr "_Editar acciones"
+
+msgid "_Edit Clipboard"
+msgstr "_Editar el portapapeles"
+
+msgid "Editing Clipboard"
+msgstr "Editando el portapapeles"
+
+msgid "Empty"
+msgstr "Vacío"
+
+msgid "End"
+msgstr "Final"
+
+msgid "Executing action..."
+msgstr "Ejecutando acción..."
+
+msgid ""
+"Gilberto \"Xyhthyx\" Miralla <xyhthyx@gmail.com>\nDoug Springer <"
+"gpib@rickyrockrat.net>"
+msgstr ""
+"Gilberto \"Xyhthyx\" Miralla <xyhthyx@gmail.com>\nDoug Springer <"
+"gpib@rickyrockrat.net>"
+
+msgid "_History"
+msgstr "_Historial"
+
+msgid "History key combination:"
+msgstr "Combinación de teclas para el historial"
+
+msgid ">>$HOME/ptest"
+msgstr ">>$HOME/ptest"
+
+msgid "Hotkeys"
+msgstr "Accesos rápidos de teclado"
+
+msgid ""
+"If checked, does a search-as-you-type. Turns red if not found. Goes to top "
+"(Alt-E) line when no chars are entered for search"
+msgstr ""
+"Si se marca, se busca mientras se escribe. Se muestra en rojo si no se "
+"encuentra. Vuelve a la primera línea (Alt-E) cuando no se introduce nada que "
+"buscar."
+
+msgid "If checked, does case sensitive search"
+msgstr "Si se marca, busca distinguiendo mayúsculas de minúsculas"
+
+msgid "If checked, edit the history item clicked on."
+msgstr "Si se marca, se edita el ítem del historial sobre el que se hace clic."
+
+msgid ""
+"If checked, enables checking multiple concurrent user logic. Use if several "
+"different users are logged in at the same time."
+msgstr ""
+"Si se usa, habilita el chequeo de operaciones de múltiples usuarios "
+"concurrentemente. Úselo si varios usuarios distintos inician sesión al mismo "
+"tiempo."
+
+msgid ""
+"If checked, enables debug prints on clipboard update logic. This only takes "
+"effect when enabled at start up, and may be disabled at compile time."
+msgstr ""
+"Si se marca, habilita la impresión de mensajes de depuración para operaciones "
+"de actualización del portapapeles. Solo tiene efecto si se habilita durante "
+"el inicio, y puede inhabilitarse durante la compilación."
+
+msgid "If checked, enables the persistent history."
+msgstr "Si se marca, habilita el historial persistente."
+
+msgid ""
+"If checked, places current clipboard entry at top of list. If not checked, "
+"history does not get sorted."
+msgstr ""
+"Si se marca, coloca la entrada actual del portapapeles al principio de la "
+"lista. Si no se marca, el historial no se ordena."
+
+msgid "If checked, puts the persistent history at the top of the history list."
+msgstr ""
+"Si se marca, coloca el historial persistente al principio de la lista del "
+"historial."
+
+msgid "If checked, puts the persistent history in a new list."
+msgstr "Si se marca, coloca el historial persistente en una lista nueva."
+
+msgid "If checked, the current entry will be on the bottom instead of the top."
+msgstr ""
+"Si se marca, la entrada actual se sitúa al final de la lista en vez de al "
+"principio."
+
+msgid "If checked, Use the clipboard, which is Ctrl-C, Ctrl-V"
+msgstr "Si se marca, se usa el portapapeles, que es Ctrl-C, Ctrl-V"
+
+msgid ""
+"If checked, Use the primary clipboard (mouse highlight-copy, middle mouse "
+"button paste)"
+msgstr ""
+"Si se marca, se usa el portapapeles primario (seleccionar con el ratón copia, "
+"botón central del ratón pega)"
+
+msgid "If checked, use X, Y to position the history list"
+msgstr "Si se marca, se usa X, Y para posicionar la lista del historial"
+
+msgid ""
+"If checked, will display tabs with Right arrow (utf8,\\2192), newlines with "
+"pharagrph(\\204b), and spaces with square-u(\\2423)."
+msgstr ""
+"Si se marca, se muestran los tabuladores con Right arrow (utf8,\\2192), las "
+"nuevas lineas con pharagrph (\\204b), y los espacios con square-u (\\2423)."
+
+msgid "If checked, will emit the history entry via the keyboard entry."
+msgstr ""
+"Si se marca, se emite la entrada del historial por medio de la entrada de "
+"teclado."
+
+msgid ""
+"If checked, will ignore any clipboard additions that contain only whitespace."
+msgstr ""
+"Si se marca, se ignora cualquier adición que solo contenga espacios, "
+"tabuladores y saltos de línea"
+
+msgid ""
+"If checked, will keep both clipboards with the same content. If primary is "
+"pasted, then copy will have the same data."
+msgstr ""
+"Si se marca, se mantienen ambos portapapeles con el mismo contenido. Si se "
+"pega en el primario, entonces Copiar tendrá el mismo dato."
+
+msgid "If checked, will replace newlines with spaces."
+msgstr "Si se marca, sustituirá los saltos de línea con espacios."
+
+msgid "If checked, will restore clipboard entry on application exit."
+msgstr ""
+"Si se marca, se restablecerá la entrada del portapapeles al salir de la "
+"aplicación."
+
+msgid "If checked, will trim whitespace from beginning and end of entry."
+msgstr ""
+"Si se marca, se eliminan espacios, tabuladores y saltos de línea al principio "
+"y al final de la entrada."
+
+msgid "If checked, will use Ctrl-V paste."
+msgstr "Si se marca, se usará Ctrl-V para pegar."
+
+msgid "If checked, will use middle mouse to paste."
+msgstr "Si se marca, se usará el botón central del ratón para pegar."
+
+msgid "If checked, will use xdotool to paste wherever the mouse is."
+msgstr ""
+"Si se marca, se usará xdotool para pegar dondequiera que esté el ratón."
+
+msgid "Ignore Whitespace Only"
+msgstr "Ignorar si solo hay espacios en blanco"
+
+msgid "Items in history"
+msgstr "Ítems en el historial"
+
+msgid "Key"
+msgstr "Tecla"
+
+msgid "Keyboard Input"
+msgstr "Entrada por teclado"
+
+msgid "Lightweight GTK+ clipboard manager."
+msgstr "Gestor ligero del portapapeles escrito usando GTK+"
+
+msgid "Max Data Size(MB)"
+msgstr "Tamaño máximo de los datos (MB)"
+
+msgid "Maximum data size of entire history list"
+msgstr "Tamaño máximo de los datos de la lista completa del historial"
+
+msgid "Maximum number of clipboard entries to keep"
+msgstr "Máximo número de ítems a mantener en el historial"
+
+msgid "Menu key combination"
+msgstr "Combinación de teclas para el menú"
+
+msgid "Middle"
+msgstr "Medio"
+
+msgid "Mouse"
+msgstr "Ratón"
+
+msgid "Multiuser"
+msgstr "Multiusuario"
+
+msgid "Omit items in the:"
+msgstr "Usar elipsis en los ítems en el:"
+
+msgid "Paste All Entry Delimiter"
+msgstr "Pegar todos los delimitadores de los ítems"
+
+msgid "Persistent As Separate List"
+msgstr "Lista separada para lo persistente"
+
+msgid "Persistent History"
+msgstr "Historial persistente"
+
+msgid "Persistent history key:"
+msgstr "Tecla para historial persistente:"
+
+msgid "Persistent On Top"
+msgstr "Mostrar lo persistente primero"
+
+msgid "Position history"
+msgstr "Posición del historial"
+
+msgid "Position in pixels from the top of the screen"
+msgstr "Posición en píxeles desde la parte superior de la pantalla"
+
+msgid "Preferences"
+msgstr "Preferencias"
+
+msgid "Print clipboard contents"
+msgstr "Imprimir el contenido del portapapeles"
+
+msgid "Print primary contents"
+msgstr "Imprimir los contenidos principales"
+
+msgid "Remove"
+msgstr "Eliminar"
+
+msgid "Restore Empty"
+msgstr "Restaurar vacío"
+
+msgid "Right Click Edit"
+msgstr "Editar con clic derecho"
+
+msgid "Run as daemon"
+msgstr "Ejecutar como demonio"
+
+msgid "Save history"
+msgstr "Guardar historial"
+
+msgid ""
+"Save History as a text file. Prepends xHIST_0000 to each entry. x is either "
+"P(persistent) or N (normal)"
+msgstr ""
+"Guardar historial como archivo de texto. Antepone xHIST_0000 a cada entrada. "
+"x es o bien P(persistente) o bien N (normal)"
+
+msgid "Save history to a file."
+msgstr "Guardar historial en un fichero"
+
+msgid "Search As You Type"
+msgstr "Buscar mientras se escribe"
+
+msgid "Show in a single line"
+msgstr "Mostrar en una sola línea"
+
+msgid "Show in reverse order"
+msgstr "Mostrar en orden inverso"
+
+msgid "> </span>"
+msgstr "> </span>"
+
+msgid "S_ynchronize clipboards"
+msgstr "S_incronizar los portapapeles"
+
+msgid "This is the Action Name. \nDO NOT put commands here."
+msgstr "Este es el Nombre de la acción. \nNO ponga órdenes aquí."
+
+msgid ""
+"This program is free software; you can redistribute it and/or modify\nit "
+"under the terms of the GNU General Public License as published by\nthe Free "
+"Software Foundation; either version 3 of the License, or\n(at your option) "
+"any later version.\n\nThis program is distributed in the hope that it will be "
+"useful,\nbut WITHOUT ANY WARRANTY; without even the implied warranty "
+"of\nMERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\nGNU "
+"General Public License for more details.\n\nYou should have received a copy "
+"of the GNU General Public License\nalong with this program.  If not, see <"
+"http://www.gnu.org/licenses/>.;"
+msgstr ""
+"Este programa es software libre; puede redistribuirlo y/o modificarlo\nbajo "
+"los términos de la Licencia Pública General GNU publicada por\nla Free "
+"Software Foundation; tanto la versión 3 de la Licencia, or\n(a su elección) "
+"cualquier versión posterior.\n\nEste programa se distribuye con la esperanza "
+"de que sea útil,\npero SIN NINGUNA GARANTÍA; incluso sin la garantía "
+"implícita de\nCOMERCIALIZACIÓN o IDONEIDAD PARA UN PROPÓSITO PARTICULAR. Vea "
+"la\nLicencia Pública General de GNU para más detalles.\n\nDebería haber "
+"recibido una copia de la Licencia Pública General de GNU\njunto con este "
+"programa. Si no es así, consulte <http://www.gnu.org/licenses/>.;"
+
+msgid ""
+"This string will be inserted between each line of history for paste all."
+msgstr ""
+"Estos caracteres se insertarán entre cada línea del historial para Pegar todo."
+
+msgid "Trim Newlines"
+msgstr "Eliminar los saltos de línea"
+
+msgid "Trim Whitespace"
+msgstr "Eliminar los espacios en blanco"
+
+msgid "Use Alt-E to edit, Alt-C to clear"
+msgstr "Use Alt-E para editar, Alt-C para borrar"
+
+msgid "Use _Copy (Ctrl-C)"
+msgstr "Usar _Copiar (Ctrl-C)"
+
+msgid ""
+"Use %% if you want a literal %. See the man page for gnuC printf (man 2 "
+"printf) for more information."
+msgstr ""
+"Use %% si quiere un literal %. Vea la página man de gnuC printf (man 2 "
+"printf) para obtener más información."
+
+msgid "Use _Primary (Selection)"
+msgstr "Usar _Primario (Selección)"
+
+msgid ""
+"Written by Gilberto \"Xyhthyx\" Miralla and Doug Springer.\nReport bugs to <"
+"gpib@rickyrockrat.net>."
+msgstr ""
+"Escrito por Gilberto \"Xyhthyx\" Miralla y Doug Springer.\nComunicar fallos a "
+"<gpib@rickyrockrat.net>."
+
+

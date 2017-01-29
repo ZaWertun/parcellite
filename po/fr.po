@@ -1,0 +1,349 @@
+# French translation of parcellite.
+# Copyright (C) 2008 Xyhthyx <xyhthyx@gmail.com>
+# Copyright (C) 2010-2013 Doug Springer <gpib@rickyrockrat.net>
+# This file is distributed under the same license as the parcellite package.
+# Vincent Coiffier <vcoiffier@yahoo.com>, 2009.
+# Benjamin Danon <benjamin@sphax3d.org>, 2009-2013.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: 1.1.6\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-08-04 13:04-0600\n"
+"PO-Revision-Date: 2013-08-04 21:30+0100\n"
+"Last-Translator: Benjamin Danon <benjamin@sphax3d.org>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "Action"
+msgstr "Action"
+
+msgid "Actions"
+msgstr "Actions"
+
+msgid "Actions key combination:"
+msgstr "Actions :"
+
+msgid "Add..."
+msgstr "Ajouter…"
+
+msgid "Alternate Non-printing Display"
+msgstr "Affichage des caractères non imprimables"
+
+msgid "Auto Paste"
+msgstr "Collage automatique"
+
+msgid "<b>Clipboards</b>"
+msgstr "<b>Presse-papiers</b>"
+
+msgid "Beginning"
+msgstr "Début"
+
+msgid "Behavior"
+msgstr "Comportement"
+
+msgid "<b>History</b>"
+msgstr "<b>Historique</b>"
+
+msgid "<b>Hotkeys</b>"
+msgstr "<b>Raccourcis claviers</b>"
+
+msgid "<b>Items</b>"
+msgstr "<b>Enregistrements du presse-papier</b>"
+
+msgid "<b>Miscellaneous</b>"
+msgstr "<b>Divers</b>"
+
+msgid "<b>None</b>"
+msgstr "<b>Aucun</b>"
+
+msgid "<b>Omitting</b>"
+msgstr "<b>Coupure des enregistrements</b>"
+
+msgid "<b>X</b>"
+msgstr "<b>X</b>"
+
+msgid "<b>Y</b>"
+msgstr "<b>Y</b>"
+
+msgid "Capture hyperlinks only"
+msgstr "Capturer uniquement les hyperliens"
+
+msgid "Case Sensitive Search"
+msgstr "Recherche sensible à la casse"
+
+msgid "Character length of items"
+msgstr "Nombre de caractères par enregistrement :"
+
+msgid "_Clear"
+msgstr "_Effacer l’historique"
+
+msgid "Clear the history?"
+msgstr "Effacer l’historique ?"
+
+msgid "Clipboard CLI usage examples:\n\n  echo \"copied to clipboard\" | parcellite\n  parcellite \"copied to clipboard\"\n  echo \"copied to clipboard\" | parcellite -c"
+msgstr "Exemples d’utilisation de lignes de commandes interprétées pour le presse-papier :\n\n  echo \"copié dans le presse-papier\" | parcellite\n  parcellite \"copié dans le presse-papier\"\n  echo \"copié dans le presse-papier\" | parcellite -c"
+
+msgid "Clipboard Manager"
+msgstr "Gestionnaire de presse-papier"
+
+msgid "Command"
+msgstr "Commande"
+
+msgid "Confirm before clearing history"
+msgstr "Confirmer avant d’effacer l’historique"
+
+msgid "Control-click Parcellite's tray icon to use actions"
+msgstr "Maintenir la touche Ctrl et cliquer sur l'icône de notification de Parcellite pour utiliser les actions"
+
+msgid "Copyright (C) 2007, 2008 Gilberto \"Xyhthyx\" Miralla\nCopyright (C) 2010-2013 Doug Springer"
+msgstr "Copyright (C) 2007, 2008 Gilberto \"Xyhthyx\" Miralla\nCopyright (C) 2010-2013 Doug Springer"
+
+msgid "Couldn't create directory: %s\n"
+msgstr "Impossible de créer le répertoire : %s\n"
+
+msgid "Current entry on top"
+msgstr "Enregistrement sélectionné en haut de liste"
+
+msgid "DebugUpdate"
+msgstr "Informations de débogage"
+
+msgid "Display"
+msgstr "Affichage"
+
+msgid "Display Version info"
+msgstr "Affiche les informations de version"
+
+msgid "Do not use status icon (Ctrl-Alt-P for menu)"
+msgstr "N’affiche pas l’icône de notification (Ctrl+Alt+P pour le menu)"
+
+msgid "Dummy desc"
+msgstr "Description factice"
+
+msgid "Dummy tip"
+msgstr "Conseil factice"
+
+msgid "_Edit actions"
+msgstr "_Modifier les actions"
+
+msgid "_Edit Clipboard"
+msgstr "_Modifier le presse-papier"
+
+msgid "Editing Clipboard"
+msgstr "Modification du presse-papier"
+
+msgid "Empty"
+msgstr "Vide"
+
+msgid "End"
+msgstr "Fin"
+
+msgid "Executing action..."
+msgstr "Exécution de l’action…"
+
+msgid "Gilberto \"Xyhthyx\" Miralla <xyhthyx@gmail.com>\nDoug Springer <gpib@rickyrockrat.net>"
+msgstr "Gilberto \"Xyhthyx\" Miralla <xyhthyx@gmail.com>\nDoug Springer <gpib@rickyrockrat.net>"
+
+msgid "_History"
+msgstr "_Historique"
+
+msgid "History key combination:"
+msgstr "Historique :"
+
+msgid "Hotkeys"
+msgstr "Raccourcis claviers"
+
+msgid "If checked, does a search-as-you-type. Turns red if not found. Goes to top (Alt-E) line when no chars are entered for search"
+msgstr "Effectue une recherche dans les enregistrements à la saisie. Devient rouge si rien ne correspond. Sélectionne le premier enregistrement (Alt+E) si aucun caractère n’est saisie."
+
+msgid "If checked, does case sensitive search"
+msgstr "Effectue une recherche sensible à la casse"
+
+msgid "If checked, enables checking multiple concurrent user logic. Use if several different users are logged in at the same time."
+msgstr "Active la vérification de la logique d’utilisateurs simultanés multiples. À utiliser si plusieurs utilisateurs différents sont identifiés en même temps."
+
+msgid "If checked, enables debug prints on clipboard update logic. This only takes effect when enabled at start up, and may be disabled at compile time."
+msgstr "Active l’affichage des informations de débogage lors de la mise à jour du presse-papier. Cela ne prend effet que lorsqu’il est activé au démarrage, et peut-être désactivé lors de la compilation."
+
+msgid "If checked, enables the persistent history."
+msgstr "Active la persistance de l’historique."
+
+msgid "If checked, places current clipboard entry at top of list. If not checked, history does not get sorted."
+msgstr "Place l’enregistrement sélectionné en haut de la liste. Sinon, l’historique n’est pas trié."
+
+msgid "If checked, puts the persistent history at the top of the history list."
+msgstr "Place l’historique persistant en haut de la liste de l’historique."
+
+msgid "If checked, puts the persistent history in a new list."
+msgstr "Place l’historique persistant dans une nouvelle liste."
+
+msgid "If checked, the current entry will be on the bottom instead of the top."
+msgstr "L’enregistrement sélectionné sera en bas de la liste au lieu d’en haut."
+
+msgid "If checked, Use the clipboard, which is Ctrl-C, Ctrl-V"
+msgstr "Utilise le presse-papier, avec Ctrl+C et Ctrl+V"
+
+msgid "If checked, Use the primary clipboard (mouse highlight-copy, middle mouse button paste)"
+msgstr "Utilise le presse-papier pour la sélection du curseur (sélection du curseur pour copier, bouton du milieu de la souris pour coller)"
+
+msgid "If checked, use X, Y to position the history list"
+msgstr "Utilise X et Y pour positionner la liste de l’historique"
+
+msgid "If checked, will display tabs with Right arrow (utf8,\\2192), newlines with pharagrph(\\204b), and spaces with square-u(\\2423)."
+msgstr "Affiche les tabulations avec le caractère →, les nouvelles lignes avec le caractère ⁋, et les espaces avec le caractère ␣."
+
+msgid "If checked, will emit the history entry via the keyboard entry."
+msgstr "Colle l’enregistrement via la saisie au clavier."
+
+msgid "If checked, will ignore any clipboard additions that contain only whitespace."
+msgstr "Ignore les enregistrements contenant uniquement des espaces."
+
+msgid "If checked, will keep both clipboards with the same content. If primary is pasted, then copy will have the same data."
+msgstr "Conserver les presse-papiers avec le même contenu. Si la sélection du curseur est collé, alors le presse-papier aura le même contenu."
+
+msgid "If checked, will replace newlines with spaces."
+msgstr "Remplace les nouvelles lignes par des espaces."
+
+msgid "If checked, will restore clipboard entry on application exit."
+msgstr "Restaure le presse-papier après fermeture de l’application."
+
+msgid "If checked, will trim whitespace from beginning and end of entry."
+msgstr "Supprime les espaces au début et à la fin de l’enregistrement."
+
+msgid "If checked, will use Ctrl-V paste."
+msgstr "Utiliser Ctrl+V pour coller."
+
+msgid "If checked, will use middle mouse to paste."
+msgstr "Utiliser le bouton du milieu de la souris pour coller."
+
+msgid "If checked, will use xdotool to paste wherever the mouse is."
+msgstr "Utiliser xdotool pour coller sans tenir compte de la position de la souris."
+
+msgid "Ignore Whitespace Only"
+msgstr "Ignorer les espaces seuls"
+
+msgid "Items in history"
+msgstr "Nombre d’enregistrements dans l'historique :"
+
+msgid "Key"
+msgstr "Raccourci clavier"
+
+msgid "Keyboard Input"
+msgstr "Saisie au clavier"
+
+msgid "Lightweight GTK+ clipboard manager."
+msgstr "Gestionnaire de presse-papier léger (GTK+)."
+
+msgid "Max Data Size(MB)"
+msgstr "Taille maximum de données en Mo"
+
+msgid "Maximum data size of entire history list"
+msgstr "Taille maximum de la liste de l’historique"
+
+msgid "Maximun number of cliboard entries to keep"
+msgstr "Nombre maximum d’enregistrements à conserver"
+
+msgid "Menu key combination"
+msgstr "Menu :"
+
+msgid "Middle"
+msgstr "Milieu"
+
+msgid "Mouse"
+msgstr "Souris"
+
+msgid "Multiuser"
+msgstr "Multi-utilisateurs"
+
+msgid "Omit items in the:"
+msgstr "Partie de l’enregistrement à couper :"
+
+msgid "Paste All Entry Delimiter"
+msgstr "Délimiteur d’enregistrements"
+
+msgid "Persistent As Separate List"
+msgstr "Persistant dans une liste séparée"
+
+msgid "Persistent History"
+msgstr "Historique persistant"
+
+msgid "Persistent history key:"
+msgstr "Historique persistant :"
+
+msgid "Persistent On Top"
+msgstr "Historique persistant en haut de liste"
+
+msgid "Position history"
+msgstr "Position de l’historique"
+
+msgid "Position in pixels from the top of the screen"
+msgstr "Position en pixels à partir du bord en haut à gauche de l’écran"
+
+msgid "Preferences"
+msgstr "Préférences"
+
+msgid "Print clipboard contents"
+msgstr "Affiche le contenu du presse-papier"
+
+msgid "Print primary contents"
+msgstr "Affiche le contenu de la sélection du curseur"
+
+msgid "Remove"
+msgstr "Supprimer"
+
+msgid "Restore Empty"
+msgstr "Restaurer l’historique vide"
+
+msgid "Run as daemon"
+msgstr "Démarre en tant que service"
+
+msgid "Save history"
+msgstr "Sauvegarder l'historique"
+
+msgid "Save History as a text file. Prepends xHIST_0000 to each entry. x is either P(persistent) or N (normal)"
+msgstr "Sauvegarder l’historique dans un fichier. Ajoutre xHIST_000 à chaque enregistrement. x est soit P (persistant) ou N (normal)"
+
+msgid "Save history to a file."
+msgstr "Sauvegarder l’historique dans un fichier."
+
+msgid "Search As You Type"
+msgstr "Recherche à la saisie"
+
+msgid "Show in a single line"
+msgstr "Afficher sur une _seule ligne"
+
+msgid "Show in reverse order"
+msgstr "Afficher dans l’ordre inverse"
+
+msgid "S_ynchronize clipboards"
+msgstr "S_ynchroniser les presse-papiers"
+
+msgid "This is the Action Name. \nDO NOT put commands here."
+msgstr "Ceci est le nom de l’action. \nNE PAS mettre de commandes ici."
+
+msgid "This program is free software; you can redistribute it and/or modify\nit under the terms of the GNU General Public License as published by\nthe Free Software Foundation; either version 3 of the License, or\n(at your option) any later version.\n\nThis program is distributed in the hope that it will be useful,\nbut WITHOUT ANY WARRANTY; without even the implied warranty of\nMERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\nGNU General Public License for more details.\n\nYou should have received a copy of the GNU General Public License\nalong with this program.  If not, see <http://www.gnu.org/licenses/>.;"
+msgstr "This program is free software; you can redistribute it and/or modify\nit under the terms of the GNU General Public License as published by\nthe Free Software Foundation; either version 3 of the License, or\n(at your option) any later version.\n\nThis program is distributed in the hope that it will be useful,\nbut WITHOUT ANY WARRANTY; without even the implied warranty of\nMERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\nGNU General Public License for more details.\n\nYou should have received a copy of the GNU General Public License\nalong with this program.  If not, see <http://www.gnu.org/licenses/>.;"
+
+msgid "This string will be inserted between each line of history for paste all."
+msgstr "Cette chaîne de caractères sera insérée entre chaque ligne de l’historique lors du collage de tous les enregistrements ensembles."
+
+msgid "Trim Newlines"
+msgstr "Rogner les nouvelles lignes"
+
+msgid "Trim Whitespace"
+msgstr "Rogner les espaces"
+
+msgid "Use Alt-E to edit, Alt-C to clear"
+msgstr "Utiliser Alt+E pour modifier, Alt+C pour effacer"
+
+msgid "Use _Copy (Ctrl-C)"
+msgstr "Utiliser la _copie (Ctrl+C)"
+
+msgid "Use _Primary (Selection)"
+msgstr "Utiliser la _sélection du curseur"
+
+msgid "Written by Gilberto \"Xyhthyx\" Miralla and Doug Springer.\nReport bugs to <gpib@rickyrockrat.net>."
+msgstr "Écrit par Gilberto \"Xyhthyx\" Miralla et Doug Springer.\nSignaler les anomalies à <gpib@rickyrockrat.net>."
+
