@@ -28,7 +28,7 @@ Build instructions:
 git clone https://github.com/ZaWertun/parcellite.git
 cd parcellite
 mkdir build && cd build && cmake -DCMAKE_INSTALL_PREFIX=/usr ..
-make -j
+make -j`nproc --all`
 ```
 
 To install run:
