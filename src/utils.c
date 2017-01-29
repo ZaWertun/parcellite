@@ -287,6 +287,13 @@ value or NULL. Free value with g_free.
 ****************************************************************************/
 int get_value_from_env(pid_t pid, gchar *key, char **value)
 {
+	char *tmp = NULL;
+	if (pid == getpid()) {
+		tmp = getenv(key);
+		*value = tmp ? g_strdup(tmp) : NULL;
+		return tmp ? 1 : 0;
+	}
+
 	GFile *fp;
 	char *env=NULL, *envf;
 	gsize elen, i;
