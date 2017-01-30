@@ -23,10 +23,21 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -Wno-unused-parameter")
 target_compile_definitions(parcellite PRIVATE GETTEXT_PACKAGE="parcellite" PARCELLITELOCALEDIR="/usr/parcellite/locale")
 target_link_libraries(parcellite ${X11_LIBRARIES} ${GTK2_LIBRARIES})
 
+# Install binary:
 install(TARGETS parcellite DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)
 
-install(FILES icons/parcellite.svg DESTINATION ${CMAKE_INSTALL_PREFIX}/share/icons/hicolor/scalable/apps)
+# Install man page:
+add_custom_target(man ALL)
+add_custom_command(
+  TARGET man
+  COMMAND gzip ARGS --to-stdout ${CMAKE_CURRENT_SOURCE_DIR}/man/parcellite.1 > ${CMAKE_CURRENT_BINARY_DIR}/parcellite.1.gz
+  OUTPUTS ${CMAKE_CURRENT_BINARY_DIR}/parcellite.1.gz
+)
+add_custom_command(TARGET man DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/parcellite.1.gz)
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/parcellite.1.gz DESTINATION ${CMAKE_INSTALL_PREFIX}/man/man1)
 
+# Install icons:
+install(FILES icons/parcellite.svg DESTINATION ${CMAKE_INSTALL_PREFIX}/share/icons/hicolor/scalable/apps)
 file (GLOB ICONS "icons/*/parcellite.png")
 foreach(file ${ICONS})
     get_filename_component(dir ${file} DIRECTORY)
@@ -35,5 +46,6 @@ foreach(file ${ICONS})
     install(FILES ${file} DESTINATION ${CMAKE_INSTALL_PREFIX}/share/icons/hicolor/${dir}/apps)
 endforeach()
 
+# Install desktop files:
 install(FILES data/parcellite.desktop DESTINATION ${CMAKE_INSTALL_PREFIX}/share/applications)
 install(FILES data/parcellite-startup.desktop DESTINATION ${CMAKE_INSTALL_PREFIX}/share/applications)
