@@ -48,4 +48,3 @@ endforeach()
 
 # Install desktop files:
 install(FILES data/parcellite.desktop DESTINATION ${CMAKE_INSTALL_PREFIX}/share/applications)
-install(FILES data/parcellite-startup.desktop DESTINATION ${CMAKE_INSTALL_PREFIX}/share/applications)

@@ -6,3 +6,6 @@ Icon=parcellite
 Name=Parcellite
 Terminal=false
 Type=Application
+X-GNOME-Autostart-enabled=true
+X-KDE-StartupNotify=false
+X-KDE-autostart-after=panel
