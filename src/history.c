@@ -387,11 +387,7 @@ void append_item(gchar* item, int checkdup, gint iflags, gint itype)
 	}else{ /**not found   */
 		if(NULL == (c=new_clip_item(CLIP_TYPE_TEXT,strlen(item),item)) )
 			return;
-		if(node > -1 && (checkdup & HIST_KEEP_FLAGS) ){
-			c->flags=flags;
-			/*g_printf("Restoring 0x%02X '%s'\n",c->flags,c->text);  */
-		}	else
-			c->flags=iflags;
+		c->flags=iflags;
 		c->type=itype;
 	}
 	
