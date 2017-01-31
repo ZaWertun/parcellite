@@ -215,7 +215,7 @@ from the list.
 void rm_h_item(struct history_info *h, GtkWidget *w, GList* element, gint which)
 {
 	GList *i;
-	GList *op;
+	GList *op = NULL;
 	switch(which){
 		case OPERATE_DELETE:
 			op=h->delete_list;
