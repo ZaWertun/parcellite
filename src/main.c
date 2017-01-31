@@ -1299,7 +1299,7 @@ static gboolean selection_done(GtkMenuShell *menushell, gpointer user_data)
 			save_history();
 			h->change_flag=0;
 		}
-    }
+	}
 
 done:
 	/*gtk_widget_destroy((GtkWidget *)menushell); - fixes annoying GTK_IS_WIDGET/GTK_IS_WINDOW
