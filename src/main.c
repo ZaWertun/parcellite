@@ -1294,11 +1294,13 @@ static gboolean selection_done(GtkMenuShell *menushell, gpointer user_data)
 	}	
 	/*g_print("selection_active=%d\n",selection_active); */
 	/*g_print("Got selection_done\n"); */
-	if(h->change_flag && get_pref_int32("save_history")){
-		save_history();
-		h->change_flag=0;
-	}
-		  
+	if (NULL != h){
+		if(h->change_flag && get_pref_int32("save_history")){
+			save_history();
+			h->change_flag=0;
+		}
+    }
+
 done:
 	/*gtk_widget_destroy((GtkWidget *)menushell); - fixes annoying GTK_IS_WIDGET/GTK_IS_WINDOW
 	  warnings from GTK when history dialog is destroyed. */
