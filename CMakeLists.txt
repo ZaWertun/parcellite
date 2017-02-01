@@ -37,7 +37,7 @@ add_custom_command(
   OUTPUTS ${CMAKE_CURRENT_BINARY_DIR}/parcellite.1.gz
 )
 add_custom_command(TARGET man DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/parcellite.1.gz)
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/parcellite.1.gz DESTINATION ${CMAKE_INSTALL_PREFIX}/man/man1)
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/parcellite.1.gz DESTINATION ${CMAKE_INSTALL_PREFIX}/share/man/man1)
 
 # Install icons:
 install(FILES icons/parcellite.svg DESTINATION ${CMAKE_INSTALL_PREFIX}/share/icons/hicolor/scalable/apps)
