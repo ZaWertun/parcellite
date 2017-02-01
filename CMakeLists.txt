@@ -1,5 +1,6 @@
+cmake_minimum_required(VERSION 3.1 FATAL_ERROR)
+
 project(parcellite)
-cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
 
 find_package(PkgConfig REQUIRED)
 find_package(X11 REQUIRED)
@@ -17,10 +18,12 @@ add_executable(parcellite src/attr_list.c
         src/preferences.c
         src/utils.c)
 
+include(FindGettext OPTIONAL)
+add_subdirectory(po)
+
 add_definitions(${GTK2_CFLAGS_OTHER})
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -Wno-unused-parameter")
-target_compile_definitions(parcellite PRIVATE GETTEXT_PACKAGE="parcellite" PARCELLITELOCALEDIR="/usr/parcellite/locale")
 target_link_libraries(parcellite ${X11_LIBRARIES} ${GTK2_LIBRARIES})
 
 # Install binary:
