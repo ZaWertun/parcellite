@@ -1619,7 +1619,6 @@ void set_clipboard_text(struct history_info *h, GList *element)
 			goto done;
 	/**from clipit 1.4.1 */
   cmd = g_strconcat("/bin/sh -c 'xdotool ", action, NULL);
-	g_fprintf(stderr,"xdotool:'%s'\ntext:'%s'\n",cmd,txt);
   GPid pid;
   gchar **argv;
   g_shell_parse_argv(cmd, NULL, &argv, NULL);
@@ -2297,7 +2296,14 @@ void write_stdin(struct p_fifo *fifo, int which)
 	 		
 	}
 }
-	
+
+void null_handler(const gchar *log_domain,
+				 GLogLevelFlags log_level,
+				 const gchar *message,
+				 gpointer user_data) {
+	/* >/dev/null */
+}
+
 /***************************************************************************/
 	/** .
 	\n\b Arguments:
@@ -2314,6 +2320,8 @@ int main(int argc, char *argv[])
   
   /* Initiate GTK+ */
   gtk_init(&argc, &argv);
+  g_log_set_default_handler(null_handler, NULL);
+
 	/**this just maps to the static struct, prefs do not need to be loaded  */
 	pref_mapper(pref2int_map,PM_INIT); 
 	check_dirs(); /**make sure we set up default RC if it doesn't exist.  */

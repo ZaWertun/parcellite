@@ -195,16 +195,14 @@ GtkTreeSelection* actions_selection;
 static void check_for_tools_exit(GPid pid, gint status, gpointer data)
 {
 	int flag= GPOINTER_TO_INT(data);
-  g_spawn_close_pid(pid);
+	g_spawn_close_pid(pid);
 	if( WIFEXITED(status) ){
 		if(0 ==WEXITSTATUS(status) )
 			tool_bitfield|=flag;
-		
 	}
 	tool_bitfield_check &= ~(flag);
-	g_fprintf(stderr,"Flag 0x%04x, status %d, EXIT %d STAT %d\n",flag,status,WIFEXITED(status),WEXITSTATUS(status) ); 
-		
 }
+
 /***************************************************************************/
 /** Check for installed tools and set flags accordingly.
 \n\b Arguments:
