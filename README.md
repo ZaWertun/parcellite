@@ -1,5 +1,6 @@
 Parcellite - Lightweight GTK+ Clipboard Manager
 ---
+[![License](https://img.shields.io/badge/license-GPL--3-brightgreen.svg)](https://opensource.org/licenses/GPL-3.0)
 [![GitHub version](https://badge.fury.io/gh/zawertun%2Fparcellite.svg)](https://badge.fury.io/gh/zawertun%2Fparcellite)
 [![Coverity Scan Build Status](https://scan.coverity.com/projects/11608/badge.svg)](https://scan.coverity.com/projects/zawertun-parcellite)
 
