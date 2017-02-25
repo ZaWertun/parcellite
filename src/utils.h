@@ -73,8 +73,6 @@ struct p_fifo {
 	gint dbg;		/**set to debug fifo system  */
 };
 
-
-int proc_find(const char* name, int mode, pid_t *pid);
 int create_fifo(void);
 int open_fifos(struct p_fifo *fifo);
 int read_fifo(struct p_fifo *f, int which);

@@ -65,7 +65,8 @@ g_signal_connect(clipboard, "owner-change",  G_CALLBACK(handle_owner_change), NU
 #include "parcellite.h"
 
 #include <ctype.h>
-#include <pthread.h>
+#include <errno.h>
+#include <sys/file.h>
 
 /**ACT are actions, and MODE is the mode of the action  */
 /** #define ACT_STOP  0
@@ -626,14 +627,13 @@ gboolean check_for_appindictor( gpointer data)
 	int mode=PROC_MODE_STRSTR;
 	if(NULL != appindicator_process && !have_appindicator ){
 		/*g_printf("Looking for '%s'\n",appindicator_process); */
-		if(get_pref_int32("multi_user"))
+		if(get_pref_int32("multi_user")){
 			mode|=PROC_MODE_USER_QUALIFY;
-		if(proc_find(appindicator_process,mode,NULL) >0){
-			have_appindicator=1;
-			if(NULL == indicator && show_icon)
-				create_app_indicator();	
-			return FALSE;
 		}
+		have_appindicator=1;
+		if(NULL == indicator && show_icon)
+			create_app_indicator();	
+		return FALSE;
 	}
 	if (1 == (int)data)/*short timer, don't call again, bug fix 118*/
 		return FALSE;
@@ -2323,6 +2323,43 @@ void null_handler(const gchar *log_domain,
 	/* >/dev/null */
 }
 
+typedef enum LockResult {
+	LOCK_ERROR,
+	LOCK_OURS,
+	LOCK_THEIRS
+} LockResult;
+
+LockResult try_to_lock(void) {
+	LockResult res;
+	uid_t uid = getuid();
+	const gchar *display = g_getenv("DISPLAY");
+	const gchar *seat = g_getenv("XDG_SEAT");
+	const gchar *cookie = g_getenv("XDG_SESSION_COOKIE");
+	gchar *name = g_strdup_printf(
+		PARCELLITE_PROG_NAME "-%d-%s%s%s.lock",
+		uid,
+		seat ? seat : "",
+		display ? display : "",
+		cookie ? cookie : ""
+	);
+
+	gchar *path = g_build_filename(g_get_tmp_dir(), name, NULL);
+	int fd = open(path, O_CREAT, S_IRUSR | S_IWUSR);
+	if (-1 == fd){
+		g_fprintf(stderr, "Error creating lock file `%s`: %s\n", path, strerror(errno));
+		res = LOCK_ERROR;
+		goto exit;
+	}
+
+	int lock_res = flock(fd, LOCK_NB | LOCK_EX);
+	res = (0 == lock_res) ? LOCK_OURS : LOCK_THEIRS;
+
+exit:
+	g_free(path);
+	g_free(name);
+	return res;
+}
+
 /***************************************************************************/
 	/** .
 	\n\b Arguments:
@@ -2360,11 +2397,17 @@ int main(int argc, char *argv[])
 	if(get_pref_int32("multi_user"))
 	  mode|=PROC_MODE_USER_QUALIFY;
 	/*g_printf("mode=0x%X\n",mode); */
-	if(proc_find(PARCELLITE_PROG_NAME,mode,NULL)<2)	/**1 for me, and 1 for a running instance  */
+
+	LockResult res;
+	if (!(res = try_to_lock())) {
+		return 2;
+	}
+
+	if(LOCK_OURS == res)
 		mode=PROG_MODE_DAEMON; /**first instance  */
 	else
 		mode=PROG_MODE_CLIENT; /**already running, just access fifos & exit.  */
-	
+
 	/**get options/cmd line not parsed.  */
 	if( NULL != opts->leftovers)g_print("%s\n",opts->leftovers);
 	/**init fifo should set up the fifo and the callback (if we are daemon mode)  */
