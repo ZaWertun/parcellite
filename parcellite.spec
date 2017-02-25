@@ -1,6 +1,6 @@
 Name:           parcellite
-Version:        1.2.2
-Release:        1%{?dist}
+Version:        1.2.3
+Release:        2%{?dist}
 Summary:        Lightweight GTK+ Clipboard Manager
 License:        GPL-3.0+
 Url:            https://github.com/ZaWertun/parcellite
@@ -20,7 +20,7 @@ Lightweight GTK+ Clipboard Manager.
 
 %build
 %cmake
-%__make %{?_smp_mflags}
+%__make VERBOSE=1 %{?_smp_mflags}
 
 %install
 %make_install
@@ -39,6 +39,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/parcellite.1.gz
 
 %changelog
+* Sat Feb 25 2017 Yaroslav Sidlovsky <zawertun@gmail.com> - 1.2.3-2
+- version 1.2.3
+
 * Wed Feb 01 2017 Yaroslav Sidlovsky <zawertun@gmail.com> - 1.2.2-1
 - initial version
 
