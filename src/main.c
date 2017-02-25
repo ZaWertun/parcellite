@@ -2400,9 +2400,6 @@ int main(int argc, char *argv[])
 	if(opts->exit)
 		return 0;
 	mode=PROC_MODE_EXACT;
-	if(get_pref_int32("multi_user"))
-	  mode|=PROC_MODE_USER_QUALIFY;
-	/*g_printf("mode=0x%X\n",mode); */
 
 	LockResult res;
 	if (!(res = try_to_lock())) {
