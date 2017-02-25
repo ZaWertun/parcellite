@@ -20,7 +20,7 @@ Lightweight GTK+ Clipboard Manager.
 
 %build
 %cmake
-%__make VERBOSE=1 %{?_smp_mflags}
+%__make %{?_smp_mflags}
 
 %install
 %make_install
