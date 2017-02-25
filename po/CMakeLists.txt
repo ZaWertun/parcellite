@@ -35,7 +35,6 @@ add_custom_command(OUTPUT ${pot_file}
 gettext_process_pot_file(${pot_file} ALL
     INSTALL_DESTINATION "${CMAKE_INSTALL_PREFIX}/share/locale/"
     LANGUAGES
-        ca
         cs
         da
         de
