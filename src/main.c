@@ -1589,49 +1589,68 @@ void set_clipboard_text(struct history_info *h, GList *element)
 	gchar *action=NULL;
 	gchar *txt=NULL;
 	gchar *cmd=NULL;
+	gchar *quoted=NULL;
 	if(NULL == find_h_item(h->delete_list,NULL,element)){	/**not in our delete list  */
 		/**make a copy of txt, because it gets freed and re-allocated.  */
 		txt=p_strdup(((struct history_item *)(element->data))->text);
-		DTRACE(g_fprintf(stderr,"set_clip_text %s\n",txt));  
+		DTRACE(g_fprintf(stderr,"set_clip_text %s\n",txt));
 		if(use_copy)
 			update_clipboard(clipboard, txt, H_MODE_LIST);
 		if(use_primary)
-	  	update_clipboard(primary, txt, H_MODE_LIST);	
-		
+		update_clipboard(primary, txt, H_MODE_LIST);
 		auto_whatever=1;
 	}
-  g_signal_emit_by_name ((gpointer)h->menu,"selection-done");
-	if(0 == auto_whatever)
+
+	g_signal_emit_by_name ((gpointer)h->menu,"selection-done");
+	if(0 == auto_whatever){
 		return;
-	/*g_printf("set_clip_text done\n");  */
-	
-	if (get_pref_int32("automatic_paste")) { /** mousedown 2 */
-		if(get_pref_int32("auto_mouse"))
-			action=g_strdup("mousedown 2 && xdotool mouseup 2'");
-		else if(get_pref_int32("auto_key"))
-			action=g_strdup("key ctrl+v'");
 	}
-	
-	if( get_pref_int32("key_input")) 
-		action=g_strconcat("type \"",txt,"\"'",NULL);
-		
-	if(NULL == action)
-			goto done;
-	/**from clipit 1.4.1 */
-  cmd = g_strconcat("/bin/sh -c 'xdotool ", action, NULL);
-  GPid pid;
-  gchar **argv;
-  g_shell_parse_argv(cmd, NULL, &argv, NULL);
-  g_free(cmd);
-  g_spawn_async(NULL, argv, NULL, G_SPAWN_DO_NOT_REAP_CHILD, NULL, NULL, &pid, NULL);
-  g_child_watch_add(pid, (GChildWatchFunc)action_exit, NULL);
-  g_strfreev(argv);
-  /**end from clipit 1.4.1 */
+
+	if(get_pref_int32("automatic_paste")){
+		if(get_pref_int32("auto_mouse")){
+			action = g_strdup("mousedown 2 && xdotool mouseup 2");
+		}else if(get_pref_int32("auto_key")){
+			action = g_strdup("key --clearmodifiers Shift+Insert");
+		}
+	}
+
+	if(get_pref_int32("key_input")){
+		quoted = g_shell_quote(txt);
+		action = g_strconcat("type --delay 1 ", quoted, NULL);
+	}
+
+	if(NULL == action){
+		goto done;
+	}
+
+	cmd = g_strconcat("xdotool ", action, NULL);
+	GPid pid;
+	gchar **argv;
+	GError *error = NULL;
+	g_shell_parse_argv(cmd, NULL, &argv, NULL);
+	g_free(cmd);
+	gboolean res = g_spawn_async(
+		NULL,
+		argv,
+		NULL,
+		G_SPAWN_SEARCH_PATH_FROM_ENVP | G_SPAWN_STDOUT_TO_DEV_NULL | G_SPAWN_STDERR_TO_DEV_NULL,
+		NULL,
+		NULL,
+		&pid,
+		&error
+	);
+	g_strfreev(argv);
+	if (!res){
+		g_fprintf(stderr, "Error when spawning process: %d - %s\n", error->code, error->message);
+	}
+
 done:
 	if(NULL != txt)
 		g_free(txt);
 	if(NULL != action)
 		g_free(action);
+	if(NULL != quoted)
+		g_free(quoted);
 }
 
 
