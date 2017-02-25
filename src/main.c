@@ -147,7 +147,7 @@ static struct pref2int pref2int_map[]={
 void create_app_indicator(void);
 
 /**Turns up in 2.16  */
-int p_strcmp (const char *str1, const char *str2)
+static int p_strcmp (const char *str1, const char *str2)
 {
 #if (GTK_MAJOR_VERSION > 2 || ( GTK_MAJOR_VERSION == 2 && GTK_MAJOR_VERSION >= 16))
   return g_strcmp0(str1,str2);
@@ -168,7 +168,7 @@ WARNING! This modifies ntext!
 \n\b Arguments:
 \n\b Returns: processed text, or NULL if it is invalid.
 ****************************************************************************/
-gchar *process_new_item(GtkClipboard *clip,gchar *ntext, int *mod)
+static gchar *process_new_item(GtkClipboard *clip,gchar *ntext, int *mod)
 {
 	size_t len, nlen;
 	gchar *rtn=NULL;
@@ -242,7 +242,7 @@ done:
 \n\b Arguments:
 \n\b Returns:	text that was updated or NULL if not.
 ****************************************************************************/
-gchar *_update_clipboard (GtkClipboard *clip, gchar *n, gchar **old, int set, int mode)
+static gchar *_update_clipboard (GtkClipboard *clip, gchar *n, gchar **old, int set, int mode)
 {
 	
 	/*return NULL; */
@@ -275,7 +275,7 @@ gchar *_update_clipboard (GtkClipboard *clip, gchar *n, gchar **old, int set, in
 \n\b Arguments:
 \n\b Returns:
 ****************************************************************************/
-gboolean content_exists(GtkClipboard *clip)
+static gboolean content_exists(GtkClipboard *clip)
 {
 	gint count;
 	GdkAtom *targets;
@@ -289,7 +289,7 @@ gboolean content_exists(GtkClipboard *clip)
 \n\b Arguments:
 \n\b Returns:	 clipboard contents, to be freed with g_free, or NULL if empty.
 ****************************************************************************/
-gchar *is_clipboard_empty(GtkClipboard *clip)
+static gchar *is_clipboard_empty(GtkClipboard *clip)
 {
   /** int count;
   GdkAtom *targets;
@@ -329,7 +329,7 @@ intext is the text coming from the clip (above)
 processed is set if we handle this clip with the options we have
 \n\b Returns: set if we changed the new text or not.
 ****************************************************************************/
-int do_we_set_clipboard(GtkClipboard *clip,gchar *intext,gchar **processed, int *mod)
+static int do_we_set_clipboard(GtkClipboard *clip,gchar *intext,gchar **processed, int *mod)
 {
 	gchar *unproc_clip;
 	int set;
@@ -352,7 +352,7 @@ int do_we_set_clipboard(GtkClipboard *clip,gchar *intext,gchar **processed, int 
 \n\b Arguments:
 \n\b Returns: text that was placed in history or NULL
 ****************************************************************************/
-gchar *update_clipboard(GtkClipboard *clip,gchar *intext,  gint mode)
+static gchar *update_clipboard(GtkClipboard *clip,gchar *intext,  gint mode)
 {
 	/**current/last item in clipboard  */
 	static gchar *ptext=NULL;
@@ -509,7 +509,7 @@ done:
 \n\b Arguments:
 \n\b Returns:
 ****************************************************************************/
-void update_clipboards(gchar *intext, gint mode)
+static void update_clipboards(gchar *intext, gint mode)
 {
 	/*g_printf("upclips\n"); */
 	update_clipboard(primary, intext, mode);
@@ -521,7 +521,7 @@ void update_clipboards(gchar *intext, gint mode)
 \n\b Arguments:
 \n\b Returns:
 ****************************************************************************/
-void do_command(gchar *buf, gint len)
+static void do_command(gchar *buf, gint len)
 {
   g_printf("Got '%s' cmd\n",buf);
 	if(!p_strcmp(buf,FIFCMD_RUN_ALL)) {
@@ -556,7 +556,7 @@ void do_command(gchar *buf, gint len)
 \n\b Arguments:
 \n\b Returns:
 ****************************************************************************/
-void check_clipboards(gint mode)
+static void check_clipboards(gint mode)
 {
 	gchar *ptext, *ctext, *last;
 	
@@ -622,7 +622,7 @@ done:
 \n\b Arguments:
 \n\b Returns:
 ****************************************************************************/
-gboolean check_for_appindictor( gpointer data)
+static gboolean check_for_appindictor( gpointer data)
 { 
 	int mode=PROC_MODE_STRSTR;
 	if(NULL != appindicator_process && !have_appindicator ){
@@ -645,7 +645,7 @@ gboolean check_for_appindictor( gpointer data)
 \n\b Arguments:
 \n\b Returns:
 ****************************************************************************/
-gboolean check_clipboards_tic(gpointer data)
+static gboolean check_clipboards_tic(gpointer data)
 {
 	/** gchar *txt=gtk_clipboard_wait_for_text(clipboard);
 	g_printf("%s\n",txt);*/
@@ -897,7 +897,7 @@ finish:
 \n\b Arguments:
 \n\b Returns:
 ****************************************************************************/
-gboolean history_item_right_click_on_edit(GtkWidget *menuitem, gpointer data)
+static gboolean history_item_right_click_on_edit(GtkWidget *menuitem, gpointer data)
 {
 	struct history_info *h=(struct history_info*)data;
 	h->wi.tmp1|=EDIT_MODE_USE_RIGHT_CLICK;
@@ -910,7 +910,7 @@ gboolean history_item_right_click_on_edit(GtkWidget *menuitem, gpointer data)
 \n\b Arguments:
 \n\b Returns:
 ****************************************************************************/
-gboolean history_item_right_click_on_copy_all(GtkWidget *menuitem, gpointer data)
+static gboolean history_item_right_click_on_copy_all(GtkWidget *menuitem, gpointer data)
 {
 	GList *element;
 	gchar*str=NULL;
@@ -950,7 +950,7 @@ gboolean history_item_right_click_on_copy_all(GtkWidget *menuitem, gpointer data
 \n\b Arguments:
 \n\b Returns:
 ****************************************************************************/
-gboolean  handle_history_item_right_click (int i, gpointer data)
+static gboolean handle_history_item_right_click (int i, gpointer data)
 {
   /* we passed the view as userdata when we connected the signal */
 	struct history_info *h=(struct history_info*)data;
@@ -959,12 +959,14 @@ gboolean  handle_history_item_right_click (int i, gpointer data)
 	}
 	return TRUE;
 }
+
 /**callback wrappers for the above function  */
-gboolean  history_item_right_click_on_move (GtkWidget *menuitem, gpointer data)
+static gboolean history_item_right_click_on_move (GtkWidget *menuitem, gpointer data)
 {
 	return handle_history_item_right_click(HIST_MOVE_TO_OK,data);
 }
-gboolean history_item_right_click_on_cancel (GtkWidget *menuitem, gpointer data)
+
+static gboolean history_item_right_click_on_cancel (GtkWidget *menuitem, gpointer data)
 {
 	return handle_history_item_right_click(HIST_MOVE_TO_CANCEL,data);
 }
@@ -974,11 +976,12 @@ gboolean history_item_right_click_on_cancel (GtkWidget *menuitem, gpointer data)
 \n\b Arguments:
 \n\b Returns:
 ****************************************************************************/
-void  destroy_right_click_history_cb(GtkWidget *attach_widget, GtkMenu *menu)
+static void destroy_right_click_history_cb(GtkWidget *attach_widget, GtkMenu *menu)
 {
 	/*g_printf("%s:\n",__func__); */
 	gtk_widget_destroy	((GtkWidget *) attach_widget);
 }
+
 /***************************************************************************/
 /** Display the right-click menu. h->menu contains the top-level history window
 \n\b Arguments:
@@ -987,7 +990,7 @@ if (event->type == GDK_BUTTON_PRESS  &&  event->button == 3)
 	view_popup_menu(treeview, event, userdata);
 	h->wi.index contains the element of the item clicked on.
 ****************************************************************************/
-void  history_item_right_click (struct history_info *h, GdkEventKey *e, gint index)
+static void history_item_right_click (struct history_info *h, GdkEventKey *e, gint index)
 {
   GtkWidget *menu, *menuitem;
   
@@ -1312,7 +1315,7 @@ done:
 \n\b Arguments:
 \n\b Returns:
 ****************************************************************************/
-void set_widget_bg(gchar *color, GtkWidget *w)
+static void set_widget_bg(gchar *color, GtkWidget *w)
 {
   GdkColor c, *cp;
   /**GtkRcStyle *st;
@@ -1583,7 +1586,7 @@ foundit:
 \n\b Arguments:
 \n\b Returns:
 ****************************************************************************/
-void set_clipboard_text(struct history_info *h, GList *element)
+static void set_clipboard_text(struct history_info *h, GList *element)
 {
 	int auto_whatever=0;
 	gchar *action=NULL;
@@ -1742,7 +1745,7 @@ static void item_selected(GtkMenuItem *menu_item, gpointer user_data)
 \n\b Arguments:
 \n\b Returns:
 ****************************************************************************/
-void write_history_menu_items(GList *list, GtkWidget *menu)
+static void write_history_menu_items(GList *list, GtkWidget *menu)
 {
 	GList *element;
 	if(NULL == list)
@@ -1759,7 +1762,7 @@ space-E290A3 - \u2423
 \n\b Arguments:
 \n\b Returns:
 ****************************************************************************/
-GString* convert_string(GString* s)
+static GString* convert_string(GString* s)
 {
 	gchar arrow[4]={0xe2,0x86,0x92,0x00};/**0xe28692 (UTF-8 right-arrow) \\  */
 	gchar pharagraph[4]={0xe2,0x81,0x8b,0x00}; /**utf-8 pharagraph symbol \2192 */
@@ -1789,7 +1792,7 @@ GString* convert_string(GString* s)
 u is history.
 \n\b Returns:
 ****************************************************************************/
-void destroy_history_menu(GtkMenuShell *menu, gpointer u)
+static void destroy_history_menu(GtkMenuShell *menu, gpointer u)
 {
 	/*g_printf("%s:\n",__func__); */
 	selection_done(menu,u);	/**allow deleted items to be deleted.  */
@@ -2044,7 +2047,7 @@ next_loop:
 \n\b Arguments:
 \n\b Returns:
 ****************************************************************************/
-gint figure_histories(void)
+static gint figure_histories(void)
 {
 	gint i;
 	if(get_pref_int32("persistent_history")){ 
@@ -2063,7 +2066,7 @@ gint figure_histories(void)
 \n\b Arguments:
 \n\b Returns:
 ****************************************************************************/
-void _show_history_menu (GtkMenuItem *m, gpointer data)
+static void _show_history_menu (GtkMenuItem *m, gpointer data)
 {
 	g_timeout_add(POPUP_DELAY, show_history_menu, GINT_TO_POINTER(figure_histories()));
 }
@@ -2072,7 +2075,7 @@ void _show_history_menu (GtkMenuItem *m, gpointer data)
 \n\b Arguments:
 \n\b Returns:
 ****************************************************************************/
-GtkWidget *create_parcellite_menu(guint button, guint activate_time)
+static GtkWidget *create_parcellite_menu(guint button, guint activate_time)
 {
   /* Declare some variables */
   GtkWidget *menu, *menu_item;
@@ -2178,7 +2181,7 @@ void setup_icon( void )
 \n\b Arguments:
 \n\b Returns:
 ****************************************************************************/
-void create_app_indicator(void)
+static void create_app_indicator(void)
 {
 	if(NULL == indicator_menu)
 		/* Create the menu */
@@ -2224,7 +2227,7 @@ void menu_hotkey(char *keystring, gpointer user_data)
 
 
 /* Startup calls and initializations */
-static void parcellite_init()
+static void parcellite_init(void)
 {
 	int i;
 /* Create clipboard */
@@ -2288,7 +2291,7 @@ static void parcellite_init()
 which - which fifo we write to.
 \n\b Returns:
 ****************************************************************************/
-void write_stdin(struct p_fifo *fifo, int which)
+static void write_stdin(struct p_fifo *fifo, int which)
 {
   if (!isatty(fileno(stdin)))   {
     GString* piped_string = g_string_new(NULL);
@@ -2329,7 +2332,7 @@ typedef enum LockResult {
 	LOCK_THEIRS
 } LockResult;
 
-LockResult try_to_lock(void) {
+static LockResult try_to_lock(void) {
 	LockResult res;
 	uid_t uid = getuid();
 	const gchar *display = g_getenv("DISPLAY");
@@ -2477,7 +2480,7 @@ int main(int argc, char *argv[])
 	}	
   
   /* Init Parcellite */
-  parcellite_init(mode);
+  parcellite_init();
   /*g_printf("Start main loop\n"); */
   /* Run GTK+ loop */
   gtk_main();

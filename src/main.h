@@ -61,7 +61,6 @@ struct history_info{
 	gint change_flag;	/**bit wise flags for history state  */
 };
 
-int p_strcmp (const char *str1, const char *str2);
 void phistory_hotkey(char *keystring, gpointer user_data);
 void history_hotkey(char *keystring, gpointer user_data);
 void actions_hotkey(char *keystring, gpointer user_data);

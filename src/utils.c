@@ -256,7 +256,7 @@ gboolean fifo_read_cb (GIOChannel *src,  GIOCondition cond, gpointer data)
 \n\b Arguments:
 \n\b Returns:
 ****************************************************************************/
-gint _create_fifo(gchar *f)
+static gint _create_fifo(gchar *f)
 {
 	int i=0;
 	if(0 == access(f,F_OK)	)
@@ -296,7 +296,7 @@ int create_fifo(void)
 \n\b Arguments:
 \n\b Returns:
 ****************************************************************************/
-int _open_fifo(char *path, int flg)
+static int _open_fifo(char *path, int flg)
 {
 	int fd;
 	mode_t mode=0660;
