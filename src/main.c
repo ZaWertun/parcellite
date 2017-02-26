@@ -706,10 +706,8 @@ static void action_selected(GtkButton *button, gpointer user_data)
   }
   /* Insert clipboard into command (user_data), and prepare it for execution */
   gchar* clipboard_text = gtk_clipboard_wait_for_text(clipboard);
-	g_fprintf(stderr,"Got cmd '%s', text '%s'->",(gchar *)user_data,clipboard_text);fflush(NULL);  
 	gchar* quoted_clipboard_text = g_shell_quote(clipboard_text);
 	gchar* command=g_strdup_printf((gchar *)user_data,quoted_clipboard_text);
-	g_fprintf(stderr," '%s'\n",command);fflush(NULL);  
   g_free(clipboard_text);
   g_free(quoted_clipboard_text);
   g_free(user_data);
@@ -722,7 +720,6 @@ static void action_selected(GtkButton *button, gpointer user_data)
   GPid pid;
   gchar **argv;
   g_shell_parse_argv(cmd, NULL, &argv, NULL);
-	g_fprintf(stderr,"cmd '%s' argv '%s' '%s' '%s'\n",cmd,argv[1],argv[2],argv[3]);  
   g_free(cmd);
   g_spawn_async(NULL, argv, NULL, G_SPAWN_DO_NOT_REAP_CHILD, NULL, NULL, &pid, NULL);
   g_child_watch_add(pid, (GChildWatchFunc)action_exit, NULL);
@@ -1215,51 +1212,84 @@ static gboolean show_actions_menu(gpointer data)
   gtk_menu_shell_append((GtkMenuShell*)menu, gtk_separator_menu_item_new());
   /* Actions */
   gchar* path = g_build_filename(g_get_user_data_dir(), ACTIONS_FILE, NULL);
-	printf("got path '%s'\n",path); fflush(NULL);
   FILE* actions_file = fopen(path, "rb");
   g_free(path);
-  /* Check that it opened and begin read */
-  if (actions_file)
-  {
-    gint size;
-    if(0==fread(&size, 4, 1, actions_file))
-    	g_print("1:got 0 items from fread\n");
-    /* Check if actions file is empty */
-    if (!size)
-    {
-      /* File contained no actions so adding empty */
-      menu_item = gtk_menu_item_new_with_label(_("Empty"));
-      gtk_widget_set_sensitive(menu_item, FALSE);
-      gtk_menu_shell_append((GtkMenuShell*)menu, menu_item);
-    }
-    /* Continue reading items until size is 0 */
-    while (size)
-    {
-      /* Read name */
-      gchar* name = (gchar*)g_malloc(size + 1);
-      if( 0 ==fread(name, size, 1, actions_file))
-      	g_print("2:got 0 items from fread\n");
-      name[size] = '\0';
-      menu_item = gtk_menu_item_new_with_label(name);
-      
-      if(0 ==fread(&size, 4, 1, actions_file))
-      	g_print("3:got 0 items from fread\n");
-      /* Read command */
-      gchar* command = (gchar*)g_malloc(size + 1);
-      if(0 ==fread(command, size, 1, actions_file))
-      	g_print("4:got 0 items from fread\n");
-      command[size] = '\0';
-		  g_print("name='%s' cmd='%s'\n",name,command);
-      if(0 ==fread(&size, 4, 1, actions_file))
-      	g_print("5:got 0 items from fread\n");
-      /* Append the action */
-      gtk_menu_shell_append((GtkMenuShell*)menu, menu_item);
-      g_signal_connect((GObject*)menu_item,        "activate",
-                       (GCallback)action_selected, (gpointer)command);      
-		  g_free(name);
-    }
-    fclose(actions_file);
-  }
+
+	/* Check that it opened and begin read */
+	if (actions_file)
+	{
+		gint size;
+		if(1 != fread(&size, 4, 1, actions_file)){
+			size = 0;
+		}
+
+		/* Check if actions file is empty */
+		if (!size){
+			/* File contained no actions so adding empty */
+			menu_item = gtk_menu_item_new_with_label(_("Empty"));
+			gtk_widget_set_sensitive(menu_item, FALSE);
+			gtk_menu_shell_append((GtkMenuShell*)menu, menu_item);
+		}else{
+			gchar* name;
+			gchar* command;
+
+			/* Continue reading items until size is 0 */
+			while (size > 0){
+				name = NULL;
+				command = NULL;
+				menu_item = NULL;
+
+				/* Read name */
+				name = (gchar*)g_malloc(size + 1);
+				if(1 != fread(name, size, 1, actions_file)){
+					break;
+				}
+				name[size] = '\0';
+				menu_item = gtk_menu_item_new_with_label(name);
+
+				if(1 != fread(&size, 4, 1, actions_file)){
+					break;
+				}
+
+				/* Read command */
+				command = (gchar*)g_malloc(size + 1);
+				if(1 != fread(command, size, 1, actions_file)){
+					break;
+				}
+				command[size] = '\0';
+				
+				if(1 != fread(&size, 4, 1, actions_file)){
+					break;
+				}
+
+				/* Append the action */
+				gtk_menu_shell_append((GtkMenuShell*)menu, menu_item);
+				g_signal_connect(
+					(GObject*)menu_item,
+					"activate",
+					(GCallback)action_selected,
+					(gpointer)command
+				);
+
+				command = NULL;
+				menu_item = NULL;
+
+				g_free(name);
+				name = NULL;
+			}
+
+			if (name)
+				g_free(name);
+
+			if (command)
+				g_free(command);
+
+			if (menu_item)
+				g_free(menu_item);
+		}
+
+		fclose(actions_file);
+	}
   else
   {
     /* File did not open so adding empty */
@@ -2374,7 +2404,7 @@ int main(int argc, char *argv[])
 	int mode;
 	
   bindtextdomain(GETTEXT_PACKAGE, PARCELLITELOCALEDIR);
-  bind_textdomain_codeset(GETTEXT_PACKAGE, "UTF-8");
+  bind_textdomain_codeset(GETTEXT_PACKAGE, "uTF-8");
   textdomain(GETTEXT_PACKAGE);
   
   /* Initiate GTK+ */

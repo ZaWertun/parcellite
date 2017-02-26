@@ -724,39 +724,70 @@ void read_preferences(int mode)
 /* Read ~/.parcellite/actions into the treeview */
 static void read_actions()
 {
-  /* Open the file for reading */
-  gchar* path = g_build_filename(g_get_user_data_dir(), ACTIONS_FILE, NULL);
-  FILE* actions_file = fopen(path, "rb");
-  g_free(path);
-  /* Check that it opened and begin read */
-  if (actions_file)
-  {
-    /* Keep a row reference */
-    GtkTreeIter row_iter;
-    /* Read the size of the first item */
-    gint size=0;
-    if(0 ==fread(&size, 4, 1, actions_file)) g_print("P1:0 Items read\n");
-    /* Continue reading until size is 0 */
-    while (size != 0)
-    {
-      /* Read name */
-      gchar* name = (gchar*)g_malloc(size + 1);
-      if(0 ==fread(name, size, 1, actions_file))  g_print("P1:0 Items read\n");
-      name[size] = '\0';
-      if(0 ==fread(&size, 4, 1, actions_file))  g_print("P1:0 Items read\n");
-      /* Read command */
-      gchar* command = (gchar*)g_malloc(size + 1);
-      if(0 ==fread(command, size, 1, actions_file))  g_print("P1:0 Items read\n");
-      command[size] = '\0';
-      if(0 ==fread(&size, 4, 1, actions_file))  g_print("P1:0 Items read\n");
-      /* Append the read action */
-      gtk_list_store_append(actions_list, &row_iter);
-      gtk_list_store_set(actions_list, &row_iter, 0, name, 1, command, -1);
-      g_free(name);
-      g_free(command);
-    }
-    fclose(actions_file);
-  }
+	/* Open the file for reading */
+	gchar* path = g_build_filename(g_get_user_data_dir(), ACTIONS_FILE, NULL);
+	FILE* actions_file = fopen(path, "rb");
+	g_free(path);
+	/* Check that it opened and begin read */
+	if (actions_file)
+	{
+		/* Keep a row reference */
+		GtkTreeIter row_iter;
+		/* Read the size of the first item */
+		gint32 size;
+
+		if (1 == fread(&size, 4, 1, actions_file)){
+			gchar* name;
+			gchar* command;
+
+			/* Continue reading until size is 0 */
+			while (size > 0)
+			{
+				name = NULL;
+				command = NULL;
+
+				/* Read name */
+				name = (gchar*)g_malloc(size + 1);
+				if (1 != fread(name, size, 1, actions_file)){
+					break;
+				}
+				name[size] = '\0';
+
+				if (1 != fread(&size, 4, 1, actions_file)){
+					break;
+				}
+
+				/* Read command */
+				command = (gchar*)g_malloc(size + 1);
+				if(1 != fread(command, size, 1, actions_file)){
+					break;
+				}
+				command[size] = '\0';
+
+				if (1 != fread(&size, 4, 1, actions_file)){
+					break;
+				}
+
+				/* Append the read action */
+				gtk_list_store_append(actions_list, &row_iter);
+				gtk_list_store_set(actions_list, &row_iter, 0, name, 1, command, -1);
+
+				g_free(name);
+				name = NULL;
+				
+				g_free(command);
+				command = NULL;
+			}
+
+			if (name)
+				g_free(name);
+
+			if (command)
+				g_free(command);
+		}
+
+		fclose(actions_file);
+	}
 }
 
 /* Save the actions treeview to ~/.local/share/parcellite/actions */
