@@ -2358,9 +2358,6 @@ static LockResult try_to_lock(void) {
 	res = (0 == lock_res) ? LOCK_OURS : LOCK_THEIRS;
 
 exit:
-	if (-1 != fd){
-		close(fd);
-	}
 	g_free(path);
 	g_free(name);
 	return res;
