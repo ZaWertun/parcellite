@@ -1131,6 +1131,20 @@ int add_section(int sec, GtkWidget *parent)
 	
 }
 
+static void
+run_response_handler (GtkDialog *dialog,
+                      gint response_id,
+                      gpointer data)
+{
+    if (response_id == GTK_RESPONSE_ACCEPT) {
+        /* Apply and save preferences */
+        apply_preferences();
+        save_preferences();
+        save_actions();
+    }
+    gtk_widget_destroy ((GtkWidget*) dialog);
+}
+
 /* Shows the preferences dialog on the given tab */
 void show_preferences(gint tab)
 {
@@ -1316,17 +1330,11 @@ void show_preferences(gint tab)
   
   /* Read actions */
   read_actions();
-  
+
   /* Run the dialog */
   gtk_widget_show_all(dialog);
   gtk_notebook_set_current_page((GtkNotebook*)notebook, tab);
-  if (gtk_dialog_run((GtkDialog*)dialog) == GTK_RESPONSE_ACCEPT)
-  {
-    /* Apply and save preferences */
-    apply_preferences();
-    save_preferences();
-    save_actions();
-  }
-  gtk_widget_destroy(dialog);
-}
 
+  g_signal_connect(dialog, "response", G_CALLBACK (run_response_handler), NULL);
+  gtk_widget_show(dialog);
+}
