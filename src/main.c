@@ -101,6 +101,7 @@ static GtkWidget *indicator_menu = NULL;
 static GtkStatusIcon *status_icon=NULL; 
 GMutex hist_lock;
 static gboolean actions_lock = FALSE;
+static gboolean history_menu_shown = FALSE;
 static int show_icon=0;
 static int have_appindicator=0; /**if set, we have a running indicator-appmenu  */
 static int ignore_clipboard=0; /**if set, don't process clip entries  */
@@ -1827,6 +1828,7 @@ static void destroy_history_menu(GtkMenuShell *menu, gpointer u)
 	/*g_printf("%s:\n",__func__); */
 	selection_done(menu,u);	/**allow deleted items to be deleted.  */
 	gtk_widget_destroy((GtkWidget *)menu);
+	history_menu_shown = FALSE;
 }
 /***************************************************************************/
 /**  Called when status icon is left-clicked or action key hit.
@@ -2098,7 +2100,10 @@ static gint figure_histories(void)
 ****************************************************************************/
 static void _show_history_menu (GtkMenuItem *m, gpointer data)
 {
-	g_timeout_add(POPUP_DELAY, show_history_menu, GINT_TO_POINTER(figure_histories()));
+    if (!history_menu_shown) {
+        history_menu_shown = TRUE;
+        g_timeout_add(POPUP_DELAY, show_history_menu, GINT_TO_POINTER(figure_histories()));
+    }
 }
 /***************************************************************************/
 /** .
