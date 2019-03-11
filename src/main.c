@@ -67,6 +67,7 @@ g_signal_connect(clipboard, "owner-change",  G_CALLBACK(handle_owner_change), NU
 #include <ctype.h>
 #include <errno.h>
 #include <sys/file.h>
+#include <assert.h>
 
 /**ACT are actions, and MODE is the mode of the action  */
 /** #define ACT_STOP  0
@@ -1222,6 +1223,7 @@ static gboolean show_actions_menu(gpointer data)
 		if(1 != fread(&size, 4, 1, actions_file)){
 			size = 0;
 		}
+		assert(size >= 0);
 
 		/* Check if actions file is empty */
 		if (!size){
@@ -1250,6 +1252,7 @@ static gboolean show_actions_menu(gpointer data)
 				if(1 != fread(&size, 4, 1, actions_file)){
 					break;
 				}
+				assert(size >= 0);
 
 				/* Read command */
 				command = (gchar*)g_malloc(size + 1);

@@ -17,7 +17,7 @@
  */
 
 #include "parcellite.h"
-
+#include <assert.h>
 
 /**This is now a gslist of   */
 GList* history_list=NULL;
@@ -84,6 +84,8 @@ void read_history_old ()
 				break;
 			} else if( 0 == size )
 				break;
+			assert(size >= 0);
+
       /* Malloc according to the size of the item */  
 			c = (struct history_item *)g_malloc0(size+ 2+sizeof(struct history_item));
       c->type=CLIP_TYPE_TEXT;

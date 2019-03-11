@@ -18,6 +18,7 @@
 
 #include "parcellite.h"
 #include <sys/wait.h>
+#include <assert.h>
 
 void setup_icon( void ); /**in main.c  */
 
@@ -756,6 +757,7 @@ static void read_actions()
 				if (1 != fread(&size, 4, 1, actions_file)){
 					break;
 				}
+				assert(size >= 0);
 
 				/* Read command */
 				command = (gchar*)g_malloc(size + 1);
