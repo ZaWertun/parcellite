@@ -29,7 +29,7 @@ static GtkClipboard* clipboard;
 
 
 /* Called during the daemon loop to protect primary/clipboard contents */
-static void daemon_check()
+static gboolean daemon_check()
 {
   /* Get current primary/clipboard contents */
   gchar* primary_temp = gtk_clipboard_wait_for_text(primary);
@@ -77,6 +77,8 @@ static void daemon_check()
   }
   g_free(primary_temp);
   g_free(clipboard_temp);
+
+  return TRUE;
 }
 
 /* Called if timeout was destroyed */
